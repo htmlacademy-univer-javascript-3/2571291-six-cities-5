@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов»
 
-* Студент: [Алексей Вохмин](https://up.htmlacademy.ru/univer-js3/5/user/2571291).
-* Наставник: `Неизвестно`.
+- Студент: [Алексей Вохмин](https://up.htmlacademy.ru/univer-js3/5/user/2571291).
+- Наставник: [Александр Сударев](https://up.htmlacademy.ru/univer-js3/5/user/1152185).
 
 ---
 
