@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ListItem } from './ListItem';
+import { SortingFormListItem } from '@/components/sorting-form-list-item';
 
 export function SortingForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,30 +23,26 @@ export function SortingForm() {
         </svg>
       </span>
       <ul
-        // className={
-        //   'places__options places__options--custom' +
-        //   (isOpen ? ' places__options--opened' : '')
-        // }
         className={`places__options places__options--custom ${
           isOpen ? 'places__options--opened' : ''
         }`}
       >
-        <ListItem
+        <SortingFormListItem
           item="Popular"
           onClick={handleOptionClick}
           activeOption={activeOption}
         />
-        <ListItem
+        <SortingFormListItem
           item="Price: low to high"
           onClick={handleOptionClick}
           activeOption={activeOption}
         />
-        <ListItem
+        <SortingFormListItem
           item="Price: high to low"
           onClick={handleOptionClick}
           activeOption={activeOption}
         />
-        <ListItem
+        <SortingFormListItem
           item="Top rated first"
           onClick={handleOptionClick}
           activeOption={activeOption}

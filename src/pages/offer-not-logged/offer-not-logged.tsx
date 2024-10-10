@@ -1,5 +1,5 @@
-import Header from '../components/Header';
-import Offer from '../offer/page';
+import Header from '@/components/header';
+import Offer from '../offer/offer';
 
 export default function OfferNotLogged() {
   return (

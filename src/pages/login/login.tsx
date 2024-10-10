@@ -1,9 +1,13 @@
-import Header from '../components/Header';
+import Header from '@/components/header';
+import Layout from '@/layout';
 
 export default function Login() {
   return (
-    <div className="page page--gray page--login">
-      <Header authenticated={false} />;
+    <Layout
+      customHeader={<Header authenticated={false} />}
+      className="page--gray page--login"
+      showFooter={false}
+    >
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">
@@ -46,7 +50,6 @@ export default function Login() {
           </section>
         </div>
       </main>
-      ;
-    </div>
+    </Layout>
   );
 }

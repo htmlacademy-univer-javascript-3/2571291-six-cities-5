@@ -3,13 +3,13 @@ import {
   Navigate,
   RouterProvider,
 } from 'react-router-dom';
-import Main from './main/page';
-import Favorites from './favorites/page';
-import FavoritesEmpty from './favorites-empty/page';
-import Login from './login/page';
-import MainEmpty from './main-empty/page';
-import OfferNotLogged from './offer-not-logged/page';
-import Offer from './offer/page';
+import Main from './pages/main/main';
+import Favorites from './pages/favorites/favorites';
+import FavoritesEmpty from './pages/favorites-empty/favorites-empty';
+import Login from './pages/login/login';
+import MainEmpty from './pages/main-empty/main-empty';
+import OfferNotLogged from './pages/offer-not-logged/offer-not-logged';
+import Offer from './pages/offer/offer';
 
 export default function App() {
   const router = createBrowserRouter([

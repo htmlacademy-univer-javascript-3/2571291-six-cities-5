@@ -45,7 +45,7 @@ export default function Header({
               </ul>
             </nav>
           ) : (
-            navItems.length && (
+            navItems.length !== 0 && (
               <nav className="header__nav">
                 <ul className="header__nav-list">
                   {navItems.map((item) => item)}

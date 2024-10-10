@@ -1,4 +1,4 @@
-export function ListItem({
+export function SortingFormListItem({
   item,
   onClick,
   activeOption,
@@ -9,10 +9,6 @@ export function ListItem({
 }) {
   return (
     <li
-      // className={
-      //   'places__option' +
-      //   (activeOption === item ? ' places__option--active' : '')
-      // }
       className={`places__option ${
         activeOption === item ? 'places__option--active' : ''
       }`}

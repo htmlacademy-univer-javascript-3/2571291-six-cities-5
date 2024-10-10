@@ -1,5 +1,5 @@
-import Header from '../components/Header';
-import Card from '../main/Card';
+import Layout from '@/layout';
+import MainCard from '@/components/main-card';
 
 export default function Offer({
   customHeader,
@@ -7,9 +7,7 @@ export default function Offer({
   customHeader?: React.ReactNode;
 }) {
   return (
-    <div className="page">
-      {customHeader || <Header />}
-
+    <Layout customHeader={customHeader}>
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
@@ -186,19 +184,19 @@ export default function Offer({
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <Card
+              <MainCard
                 price={80}
                 title="Wood and stone place"
                 type="Room"
                 imageSrc="img/room.jpg"
               />
-              <Card
+              <MainCard
                 price={132}
                 title="Canal View Prinsengracht"
                 type="Apartment"
                 imageSrc="img/apartment-02.jpg"
               />
-              <Card
+              <MainCard
                 price={180}
                 title="Nice, cozy, warm big bed apartment"
                 type="Apartment"
@@ -210,6 +208,6 @@ export default function Offer({
           </section>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }

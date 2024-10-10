@@ -1,10 +1,9 @@
-import Header from '../components/Header';
+import Layout from '@/layout';
 
 export default function MainEmpty() {
   return (
-    <div className="page page--gray page--main">
-      <Header />
-
+    <Layout className="page--gray page--main" showFooter={false}>
+      {' '}
       <main className="page__main page__main--index page__main--index-empty">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -61,6 +60,6 @@ export default function MainEmpty() {
           </div>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }

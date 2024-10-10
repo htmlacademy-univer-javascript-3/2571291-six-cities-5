@@ -1,51 +1,45 @@
-// Я знаю что делаю и я знаю что это плохо
-// TODO убрать отключение правила
-/* eslint-disable react/jsx-key */
-
-import React from 'react';
-import Card from './Card';
-import Header from '../components/Header';
-import { SortingForm } from './SortingForm';
+import MainCard from '@/components/main-card';
+import { SortingForm } from '@/components/sorting-form';
+import Layout from '@/layout';
 
 export default function Main() {
   const cards = [
-    <Card
-      price={120}
-      title="Beautiful & luxurious apartment at great location"
-      type="Apartment"
-      mark
-      imageSrc="img/apartment-01.jpg"
-    />,
-    <Card
-      price={80}
-      title="Wood and stone place"
-      type="Room"
-      imageSrc="img/room.jpg"
-    />,
-    <Card
-      price={132}
-      title="Canal View Prinsengracht"
-      type="Apartment"
-      imageSrc="img/apartment-02.jpg"
-    />,
-    <Card
-      price={180}
-      title="Nice, cozy, warm big bed apartment"
-      type="Apartment"
-      mark
-      imageSrc="img/apartment-03.jpg"
-    />,
-    <Card
-      price={80}
-      title="Wood and stone place"
-      type="Room"
-      imageSrc="img/room.jpg"
-    />,
+    {
+      price: 120,
+      title: 'Beautiful & luxurious apartment at great location',
+      type: 'Apartment',
+      mark: true,
+      imageSrc: 'img/apartment-01.jpg',
+    },
+    {
+      price: 80,
+      title: 'Wood and stone place',
+      type: 'Room',
+      imageSrc: 'img/room.jpg',
+    },
+    {
+      price: 132,
+      title: 'Canal View Prinsengracht',
+      type: 'Apartment',
+      imageSrc: 'img/apartment-02.jpg',
+    },
+    {
+      price: 180,
+      title: 'Nice, cozy, warm big bed apartment',
+      type: 'Apartment',
+      mark: true,
+      imageSrc: 'img/apartment-03.jpg',
+    },
+    {
+      price: 80,
+      title: 'Wood and stone place',
+      type: 'Room',
+      imageSrc: 'img/room.jpg',
+    },
   ];
 
   return (
-    <div className="page page--gray page--main">
-      <Header />
+    <Layout className="page--gray page--main" showFooter={false}>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -92,10 +86,15 @@ export default function Main() {
               <SortingForm />
               <div className="cities__places-list places__list tabs__content">
                 {Array.from({ length: 312 }).map((_, i) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <React.Fragment key={`place-card-${i}`}>
-                    {cards[i % cards.length]}
-                  </React.Fragment>
+                  <MainCard
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`place-card-${i}`}
+                    price={cards[i % cards.length].price}
+                    title={cards[i % cards.length].title}
+                    type={cards[i % cards.length].type}
+                    mark={cards[i % cards.length].mark}
+                    imageSrc={cards[i % cards.length].imageSrc}
+                  />
                 ))}
               </div>
             </section>
@@ -105,6 +104,6 @@ export default function Main() {
           </div>
         </div>
       </main>
-    </div>
+    </Layout>
   );
 }

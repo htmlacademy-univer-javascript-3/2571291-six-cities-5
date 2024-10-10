@@ -1,11 +1,8 @@
-import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Layout from '@/layout';
 
 export default function FavoritesEmpty() {
   return (
-    <div className="page page--favorites-empty">
-      <Header />
-
+    <Layout className="page--favorites-empty">
       <main className="page__main page__main--favorites page__main--favorites-empty">
         <div className="page__favorites-container container">
           <section className="favorites favorites--empty">
@@ -19,8 +16,6 @@ export default function FavoritesEmpty() {
           </section>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </Layout>
   );
 }
