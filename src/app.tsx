@@ -21,8 +21,9 @@ export default function App() {
       path: '/favorites',
       Component: () => {
         const { user } = useUser();
-        console.log(user);
-        if (user) return <Favorites />;
+        if (user) {
+          return <Favorites />;
+        }
         return <Navigate to="/login" />;
       },
     },

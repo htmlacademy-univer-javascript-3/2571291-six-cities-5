@@ -6,20 +6,20 @@ type User = {
 
 const userContext = createContext<
   | { user: User | undefined; updateUser: (user: User | undefined) => void }
-  | undefined
->(undefined);
+    | undefined
+    >(undefined);
 
 export default function UserProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [_user, setUser] = useState<User | undefined>(undefined);
 
   const updateUser = (user: User | undefined) => setUser(user);
 
   return (
-    <userContext.Provider value={{ user, updateUser }}>
+    <userContext.Provider value={{ user: _user, updateUser }}>
       {children}
     </userContext.Provider>
   );
