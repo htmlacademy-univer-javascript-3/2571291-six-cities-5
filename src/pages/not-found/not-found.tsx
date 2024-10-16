@@ -1,3 +1,4 @@
+import { Routes } from '@/app';
 import { Link } from 'react-router-dom';
 
 export default function NotFound() {
@@ -16,7 +17,7 @@ export default function NotFound() {
         <br />
         <small>Page not found</small>
       </h1>
-      <Link to="/">Go to main page</Link>
+      <Link to={Routes.MAIN}>Go to main page</Link>
     </div>
   );
 }
