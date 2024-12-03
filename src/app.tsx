@@ -7,8 +7,8 @@ import MainEmpty from './pages/main-empty/main-empty';
 import OfferNotLogged from './pages/offer-not-logged/offer-not-logged';
 import Offer from './pages/offer/offer';
 import NotFound from './pages/not-found/not-found';
-import NotImplemented from './pages/not-implemented/not-implemented';
 import PrivateRoute from './pages/private-route/private-route';
+import { offers } from './mocks/offers';
 
 export const Routes = {
   MAIN: '/',
@@ -17,17 +17,17 @@ export const Routes = {
   LOGIN: '/login',
   MAIN_EMPTY: '/main-empty',
   OFFER_NOT_LOGGED: '/offer-not-logged',
-  OFFER: '/offer',
+  OFFER: '/offer/:id',
 } as const;
 
 export default function App() {
   const router = createBrowserRouter([
-    { path: Routes.MAIN, element: <Main /> },
+    { path: Routes.MAIN, element: <Main offers={offers} /> },
     {
       path: Routes.FAVORITES,
       element: (
-        <PrivateRoute isAuthenticated={false}>
-          <Favorites />
+        <PrivateRoute isAuthenticated>
+          <Favorites offers={offers.filter((x) => x.isFavorite)} />
         </PrivateRoute>
       ),
     },
@@ -35,13 +35,7 @@ export default function App() {
     { path: Routes.LOGIN, element: <Login /> },
     { path: Routes.MAIN_EMPTY, element: <MainEmpty /> },
     { path: Routes.OFFER_NOT_LOGGED, element: <OfferNotLogged /> },
-    {
-      path: Routes.OFFER,
-      children: [
-        { path: '', element: <Offer /> },
-        { path: ':id', element: <NotImplemented /> },
-      ],
-    },
+    { path: Routes.OFFER, element: <Offer /> },
     { path: '*', element: <NotFound /> },
   ]);
 

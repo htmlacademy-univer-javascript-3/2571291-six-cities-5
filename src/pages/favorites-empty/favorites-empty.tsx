@@ -1,6 +1,6 @@
 import Layout from '@/layout';
 
-export default function FavoritesEmpty() {
+function FavoritesEmpty() {
   return (
     <Layout className="page--favorites-empty">
       <main className="page__main page__main--favorites page__main--favorites-empty">
@@ -19,3 +19,5 @@ export default function FavoritesEmpty() {
     </Layout>
   );
 }
+
+export default FavoritesEmpty;

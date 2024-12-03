@@ -1,7 +1,7 @@
 import Header from '@/components/header';
 import Offer from '../offer/offer';
 
-export default function OfferNotLogged() {
+function OfferNotLogged() {
   return (
     <Offer
       customHeader={
@@ -23,3 +23,5 @@ export default function OfferNotLogged() {
     />
   );
 }
+
+export default OfferNotLogged;

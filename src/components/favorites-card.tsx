@@ -2,20 +2,13 @@ export default function FavoritesCard({
   price,
   title,
   type,
-  mark,
   imageSrc,
-  rate = 4,
-}: {
-  price: number;
-  title: string;
-  type: string;
-  mark?: boolean;
-  imageSrc: string;
-  rate?: IntRange<1, 5>;
-}) {
+  isPremium,
+  rating,
+}: Omit<Offer, 'city'>) {
   return (
     <article className="favorites__card place-card">
-      {mark && (
+      {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
@@ -49,7 +42,7 @@ export default function FavoritesCard({
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${(rate / 5) * 100}%` }}></span>
+            <span style={{ width: `${(rating / 5) * 100}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

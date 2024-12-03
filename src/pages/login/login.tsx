@@ -2,7 +2,7 @@ import Header from '@/components/header';
 import Layout from '@/layout';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+function Login() {
   const navigate = useNavigate();
 
   return (
@@ -64,3 +64,5 @@ export default function Login() {
     </Layout>
   );
 }
+
+export default Login;

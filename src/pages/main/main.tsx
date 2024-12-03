@@ -1,43 +1,12 @@
-import MainCard from '@/components/main-card';
+import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
 import Layout from '@/layout';
 
-export default function Main() {
-  const cards = [
-    {
-      price: 120,
-      title: 'Beautiful & luxurious apartment at great location',
-      type: 'Apartment',
-      mark: true,
-      imageSrc: 'img/apartment-01.jpg',
-    },
-    {
-      price: 80,
-      title: 'Wood and stone place',
-      type: 'Room',
-      imageSrc: 'img/room.jpg',
-    },
-    {
-      price: 132,
-      title: 'Canal View Prinsengracht',
-      type: 'Apartment',
-      imageSrc: 'img/apartment-02.jpg',
-    },
-    {
-      price: 180,
-      title: 'Nice, cozy, warm big bed apartment',
-      type: 'Apartment',
-      mark: true,
-      imageSrc: 'img/apartment-03.jpg',
-    },
-    {
-      price: 80,
-      title: 'Wood and stone place',
-      type: 'Room',
-      imageSrc: 'img/room.jpg',
-    },
-  ];
+type Props = {
+  offers: Offer[];
+};
 
+function Main({ offers }: Props) {
   return (
     <Layout className="page--gray page--main" showFooter={false}>
       <main className="page__main page__main--index">
@@ -84,19 +53,7 @@ export default function Main() {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">312 places to stay in Amsterdam</b>
               <SortingForm />
-              <div className="cities__places-list places__list tabs__content">
-                {Array.from({ length: 312 }).map((_, i) => (
-                  <MainCard
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`place-card-${i}`}
-                    price={cards[i % cards.length].price}
-                    title={cards[i % cards.length].title}
-                    type={cards[i % cards.length].type}
-                    mark={cards[i % cards.length].mark}
-                    imageSrc={cards[i % cards.length].imageSrc}
-                  />
-                ))}
-              </div>
+              <OffersList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
@@ -107,3 +64,5 @@ export default function Main() {
     </Layout>
   );
 }
+
+export default Main;

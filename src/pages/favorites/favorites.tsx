@@ -1,7 +1,22 @@
 import FavoritesCard from '@/components/favorites-card';
 import Layout from '@/layout';
 
-export default function Favorites() {
+type Props = {
+  offers: Offer[];
+};
+
+function Favorites({ offers }: Props) {
+  const offersByCity = offers.reduce((acc, o) => {
+    if (!o.city) {
+      return acc;
+    }
+    if (!acc[o.city]) {
+      acc[o.city] = [];
+    }
+    acc[o.city].push(o);
+    return acc;
+  }, {} as Record<OfferCity, Offer[]>);
+
   return (
     <Layout>
       <main className="page__main page__main--favorites">
@@ -9,50 +24,30 @@ export default function Favorites() {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
+              {Object.entries(offersByCity).map(([city, o]) => (
+                <li className="favorites__locations-items" key={city}>
+                  <div className="favorites__locations locations locations--current">
+                    <div className="locations__item">
+                      <a className="locations__item-link" href="#">
+                        <span>{city}</span>
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <div className="favorites__places">
-                  <FavoritesCard
-                    price={180}
-                    title="Nice, cozy, warm big bed apartment"
-                    type="Apartment"
-                    mark
-                    imageSrc="img/apartment-small-03.jpg"
-                    rate={5}
-                  />
-                  <FavoritesCard
-                    price={80}
-                    title="Wood and stone place"
-                    type="Room"
-                    imageSrc="img/room-small.jpg"
-                  />
-                </div>
-              </li>
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Cologne</span>
-                    </a>
+                  <div className="favorites__places">
+                    {o.map((x) => (
+                      <FavoritesCard
+                        imageSrc={x.imageSrc}
+                        price={x.price}
+                        title={x.title}
+                        type={x.type}
+                        id={x.id}
+                        rating={x.rating}
+                        key={x.id}
+                      />
+                    ))}
                   </div>
-                </div>
-                <div className="favorites__places">
-                  <FavoritesCard
-                    price={180}
-                    title="White castle"
-                    type="Apartment"
-                    imageSrc="img/apartment-small-04.jpg"
-                    rate={5}
-                  />
-                </div>
-              </li>
+                </li>
+              ))}
             </ul>
           </section>
         </div>
@@ -60,3 +55,5 @@ export default function Favorites() {
     </Layout>
   );
 }
+
+export default Favorites;

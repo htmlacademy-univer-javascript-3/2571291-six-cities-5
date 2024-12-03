@@ -1,11 +1,12 @@
 import Layout from '@/layout';
-import MainCard from '@/components/main-card';
+import OfferCard from '@/components/offer-card';
+import ReviewsForm from '@/components/reviews-form';
 
-export default function Offer({
-  customHeader,
-}: {
+type Props = {
   customHeader?: React.ReactNode;
-}) {
+};
+
+function Offer({ customHeader }: Props) {
   return (
     <Layout customHeader={customHeader}>
       <main className="page__main page__main--offer">
@@ -67,7 +68,7 @@ export default function Offer({
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
+                    <use xlinkHref="#icon-bookmark" />
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
@@ -173,6 +174,7 @@ export default function Offer({
                     </div>
                   </li>
                 </ul>
+                <ReviewsForm />
               </section>
             </div>
           </div>
@@ -184,25 +186,29 @@ export default function Offer({
               Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
-              <MainCard
+              <OfferCard
                 price={80}
                 title="Wood and stone place"
-                type="Room"
+                type="apartment"
                 imageSrc="img/room.jpg"
+                id="1"
+                rating={4}
               />
-              <MainCard
+              <OfferCard
                 price={132}
                 title="Canal View Prinsengracht"
-                type="Apartment"
+                type="apartment"
                 imageSrc="img/apartment-02.jpg"
+                id="2"
+                rating={4}
               />
-              <MainCard
+              <OfferCard
                 price={180}
                 title="Nice, cozy, warm big bed apartment"
-                type="Apartment"
-                mark
+                type="apartment"
                 imageSrc="img/apartment-03.jpg"
-                rate={5}
+                id="3"
+                rating={5}
               />
             </div>
           </section>
@@ -211,3 +217,5 @@ export default function Offer({
     </Layout>
   );
 }
+
+export default Offer;
