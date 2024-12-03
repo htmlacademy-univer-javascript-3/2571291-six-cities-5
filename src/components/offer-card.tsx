@@ -1,33 +1,32 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function MainCard({
+export default function OfferCard({
+  id,
   price,
   title,
   type,
-  mark,
+  isFavorite,
+  isPremium,
   imageSrc,
-  inBookmarks = false,
-  rate = 4,
-}: {
-  price: number;
-  title: string;
-  type: string;
-  mark?: boolean;
-  imageSrc: string;
-  inBookmarks?: boolean;
-  rate?: IntRange<1, 5>;
-}) {
-  const [isBookmarked, setIsBookmarked] = useState(inBookmarks);
+  rating = 4,
+  onHover,
+}: Offer & { onHover?: (id?: Offer['id']) => void }) {
+  const [isBookmarked, setIsBookmarked] = useState(isFavorite);
 
   return (
-    <article className="cities__card place-card">
-      {mark && (
+    <article
+      className="cities__card place-card"
+      onMouseEnter={() => onHover?.(id)}
+      onMouseLeave={() => onHover?.()}
+    >
+      {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
             src={imageSrc}
@@ -35,7 +34,7 @@ export default function MainCard({
             height="200"
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -60,12 +59,12 @@ export default function MainCard({
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${(rate / 5) * 100}%` }}></span>
+            <span style={{ width: `${(rating / 5) * 100}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

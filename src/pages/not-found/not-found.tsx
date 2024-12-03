@@ -1,7 +1,7 @@
 import { Routes } from '@/app';
 import { Link } from 'react-router-dom';
 
-export default function NotFound() {
+function NotFound() {
   return (
     <div
       style={{
@@ -21,3 +21,5 @@ export default function NotFound() {
     </div>
   );
 }
+
+export default NotFound;

@@ -1,8 +1,12 @@
 import { Navigate } from 'react-router-dom';
 
-export default function PrivateRoute({
+type Props = { isAuthenticated: boolean };
+
+function PrivateRoute({
   children,
   isAuthenticated,
-}: React.PropsWithChildren<{ isAuthenticated: boolean }>) {
+}: React.PropsWithChildren<Props>) {
   return isAuthenticated ? children : <Navigate to="/login" />;
 }
+
+export default PrivateRoute;

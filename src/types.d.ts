@@ -18,3 +18,24 @@ type Prettify<T> = {
 type User = {
   email: string;
 };
+
+type OfferType = 'apartment' | 'room' | 'house' | 'hotel';
+type OfferCity =
+  | 'Paris'
+  | 'Cologne'
+  | 'Brussels'
+  | 'Amsterdam'
+  | 'Hamburg'
+  | 'Dusseldorf';
+
+type Offer = {
+  id: string;
+  title: string;
+  type: OfferType;
+  isFavorite?: boolean;
+  isPremium?: boolean;
+  price: number;
+  imageSrc: string;
+  rating: number;
+  city?: OfferCity;
+};
