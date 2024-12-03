@@ -1,7 +1,10 @@
+import { Routes } from '@/app';
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   return (
     <footer className="footer container">
-      <a className="footer__logo-link" href="/main">
+      <Link className="footer__logo-link" to={Routes.MAIN}>
         <img
           className="footer__logo"
           src="img/logo.svg"
@@ -9,7 +12,7 @@ export default function Footer() {
           width="64"
           height="33"
         />
-      </a>
+      </Link>
     </footer>
   );
 }
