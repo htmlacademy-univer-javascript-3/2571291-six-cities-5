@@ -13,7 +13,7 @@ type IntRange<F extends number, T extends number> =
 
 type Prettify<T> = {
   [K in keyof T]: T[K];
-} & {};
+} & object;
 
 type User = {
   email: string;

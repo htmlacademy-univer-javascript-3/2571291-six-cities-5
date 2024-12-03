@@ -21,12 +21,6 @@ export default function Login() {
               method="post"
               onSubmit={(event) => {
                 event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const data = Object.fromEntries(formData.entries()) as {
-                  email: string;
-                  password: string;
-                };
-                console.log(data);
                 navigate('/');
               }}
             >
