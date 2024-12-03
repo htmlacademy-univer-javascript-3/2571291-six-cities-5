@@ -1,5 +1,3 @@
-import { IntRange } from '@/types';
-
 export default function FavoritesCard({
   price,
   title,

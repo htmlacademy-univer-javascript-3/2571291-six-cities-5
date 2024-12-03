@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { IntRange } from '@/types';
 
 export default function MainCard({
   price,

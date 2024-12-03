@@ -7,6 +7,14 @@ type Enumerate<
   : Enumerate<N, [...Acc, Acc['length']]>;
 
 /** https://stackoverflow.com/a/39495173/20785115 */
-export type IntRange<F extends number, T extends number> =
+type IntRange<F extends number, T extends number> =
   | Exclude<Enumerate<T>, Enumerate<F>>
   | T;
+
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
+
+type User = {
+  email: string;
+};

@@ -1,5 +1,4 @@
 import { Routes } from '@/app';
-import { useUser } from '@/providers/user-provider';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,8 +9,6 @@ export default function Header({
   authenticated?: boolean;
   navItems?: React.ReactNode[];
 }) {
-  const { user, updateUser } = useUser();
-
   return (
     <header className="header">
       <div className="container">
@@ -37,17 +34,13 @@ export default function Header({
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                      {user?.email || 'Oliver.conner@gmail.com'}
+                      Oliver.conner@gmail.com
                     </span>
                     <span className="header__favorite-count">3</span>
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link
-                    className="header__nav-link"
-                    to={Routes.LOGIN}
-                    onClick={() => updateUser(undefined)}
-                  >
+                  <Link className="header__nav-link" to={Routes.LOGIN}>
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>

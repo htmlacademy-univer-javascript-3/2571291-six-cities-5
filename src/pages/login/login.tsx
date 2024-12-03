@@ -1,10 +1,8 @@
 import Header from '@/components/header';
 import Layout from '@/layout';
-import { useUser } from '@/providers/user-provider';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const { updateUser } = useUser();
   const navigate = useNavigate();
 
   return (
@@ -28,7 +26,7 @@ export default function Login() {
                   email: string;
                   password: string;
                 };
-                updateUser({ email: data.email });
+                console.log(data);
                 navigate('/');
               }}
             >

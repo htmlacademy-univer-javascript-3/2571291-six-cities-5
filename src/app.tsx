@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Main from './pages/main/main';
 import Favorites from './pages/favorites/favorites';
 import FavoritesEmpty from './pages/favorites-empty/favorites-empty';
@@ -12,7 +8,7 @@ import OfferNotLogged from './pages/offer-not-logged/offer-not-logged';
 import Offer from './pages/offer/offer';
 import NotFound from './pages/not-found/not-found';
 import NotImplemented from './pages/not-implemented/not-implemented';
-import { useUser } from './providers/user-provider';
+import PrivateRoute from './pages/private-route/private-route';
 
 export const Routes = {
   MAIN: '/',
@@ -29,13 +25,11 @@ export default function App() {
     { path: Routes.MAIN, element: <Main /> },
     {
       path: Routes.FAVORITES,
-      Component: () => {
-        const { user } = useUser();
-        if (user) {
-          return <Favorites />;
-        }
-        return <Navigate to={Routes.LOGIN} />;
-      },
+      element: (
+        <PrivateRoute isAuthenticated={false}>
+          <Favorites />
+        </PrivateRoute>
+      ),
     },
     { path: Routes.FAVORITES_EMPTY, element: <FavoritesEmpty /> },
     { path: Routes.LOGIN, element: <Login /> },
