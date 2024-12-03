@@ -65,4 +65,4 @@ function Main({ offers }: Props) {
   );
 }
 
-export default Main;
+export { Main };

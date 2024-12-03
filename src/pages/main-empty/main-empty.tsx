@@ -63,4 +63,4 @@ function MainEmpty() {
   );
 }
 
-export default MainEmpty;
+export { MainEmpty };

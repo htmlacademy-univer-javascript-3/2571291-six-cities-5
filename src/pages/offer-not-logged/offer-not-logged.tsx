@@ -1,5 +1,5 @@
 import Header from '@/components/header';
-import Offer from '../offer/offer';
+import { Offer } from '@/pages';
 
 function OfferNotLogged() {
   return (
@@ -24,4 +24,4 @@ function OfferNotLogged() {
   );
 }
 
-export default OfferNotLogged;
+export { OfferNotLogged };
