@@ -218,4 +218,4 @@ function Offer({ customHeader }: Props) {
   );
 }
 
-export default Offer;
+export { Offer };

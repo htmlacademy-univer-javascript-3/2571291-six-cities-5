@@ -1,6 +1,11 @@
 import OfferCard from './offer-card';
 
-export default function OffersList({ offers }: { offers: Offer[] }) {
+type Props = {
+  offers: Offer[];
+  onOfferHover?: React.ComponentProps<typeof OfferCard>['onHover'];
+};
+
+function OffersList({ offers, onOfferHover }: Props) {
   return (
     <div className="cities__places-list places__list tabs__content">
       {offers.map((x) => (
@@ -14,8 +19,11 @@ export default function OffersList({ offers }: { offers: Offer[] }) {
           isPremium={x.isPremium}
           rating={x.rating}
           imageSrc={x.imageSrc}
+          onHover={onOfferHover}
         />
       ))}
     </div>
   );
 }
+
+export default OffersList;

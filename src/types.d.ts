@@ -38,4 +38,18 @@ type Offer = {
   imageSrc: string;
   rating: number;
   city?: OfferCity;
+  location?: PointMap;
+};
+
+type CityMap = {
+  title: string;
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+
+type PointMap = {
+  id: string;
+  latitude: number;
+  longitude: number;
 };

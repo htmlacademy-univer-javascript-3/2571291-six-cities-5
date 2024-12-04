@@ -1,12 +1,16 @@
+import Map from '@/components/map';
 import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
 import Layout from '@/layout';
+import { useState } from 'react';
 
 type Props = {
   offers: Offer[];
 };
 
 function Main({ offers }: Props) {
+  const [hoveredOffer, setHoveredOffer] = useState<Offer['id']>();
+
   return (
     <Layout className="page--gray page--main" showFooter={false}>
       <main className="page__main page__main--index">
@@ -51,12 +55,31 @@ function Main({ offers }: Props) {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">
+                {offers.length} places to stay in Amsterdam
+              </b>
               <SortingForm />
-              <OffersList offers={offers} />
+              <OffersList offers={offers} onOfferHover={setHoveredOffer} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map">
+                <Map
+                  city={{
+                    title: 'Amsterdam',
+                    latitude: 52.35,
+                    longitude: 4.9,
+                    zoom: 11,
+                  }}
+                  points={offers
+                    .filter((x) => !!x.location)
+                    .map((offer) => ({
+                      id: offer.id,
+                      latitude: offer.location!.latitude,
+                      longitude: offer.location!.longitude,
+                    }))}
+                  selectedPoint={hoveredOffer}
+                />
+              </section>
             </div>
           </div>
         </div>
@@ -65,4 +88,4 @@ function Main({ offers }: Props) {
   );
 }
 
-export default Main;
+export { Main };

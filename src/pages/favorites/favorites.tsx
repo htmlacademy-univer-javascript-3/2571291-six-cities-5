@@ -56,4 +56,4 @@ function Favorites({ offers }: Props) {
   );
 }
 
-export default Favorites;
+export { Favorites };
