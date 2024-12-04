@@ -1,12 +1,21 @@
 import Layout from '@/layout';
-import OfferCard from '@/components/offer-card';
 import ReviewsForm from '@/components/reviews-form';
+import ReviewsList from '@/components/reviews-list';
+import { reviews } from '@/mocks/reviews';
+import Map from '@/components/map';
+import { CityLocations } from '@/constants';
+import { offers } from '@/mocks/offers';
+import { useState } from 'react';
+import NearPlacesList from '@/components/near-places-list';
 
 type Props = {
   customHeader?: React.ReactNode;
 };
 
 function Offer({ customHeader }: Props) {
+  const [hoveredOffer, setHoveredOffer] = useState<Offer['id']>();
+  const nearbyOffers = offers.slice(0, 3);
+
   return (
     <Layout customHeader={customHeader}>
       <main className="page__main page__main--offer">
@@ -139,79 +148,30 @@ function Offer({ customHeader }: Props) {
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">1</span>
-                </h2>
-                <ul className="reviews__list">
-                  <li className="reviews__item">
-                    <div className="reviews__user user">
-                      <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                        <img
-                          className="reviews__avatar user__avatar"
-                          src="img/avatar-max.jpg"
-                          width="54"
-                          height="54"
-                          alt="Reviews avatar"
-                        />
-                      </div>
-                      <span className="reviews__user-name">Max</span>
-                    </div>
-                    <div className="reviews__info">
-                      <div className="reviews__rating rating">
-                        <div className="reviews__stars rating__stars">
-                          <span style={{ width: '80%' }}></span>
-                          <span className="visually-hidden">Rating</span>
-                        </div>
-                      </div>
-                      <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river
-                        by the unique lightness of Amsterdam. The building is
-                        green and from 18th century.
-                      </p>
-                      <time className="reviews__time" dateTime="2019-04-24">
-                        April 2019
-                      </time>
-                    </div>
-                  </li>
-                </ul>
+                <ReviewsList reviews={reviews} />
                 <ReviewsForm />
               </section>
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <section className="offer__map map">
+            <Map
+              city={CityLocations.AMSTERDAM}
+              points={nearbyOffers
+                .filter((x) => !!x.location)
+                .map((offer) => ({
+                  id: offer.id,
+                  latitude: offer.location!.latitude,
+                  longitude: offer.location!.longitude,
+                }))}
+              selectedPoint={hoveredOffer}
+            />
+          </section>
         </section>
         <div className="container">
-          <section className="near-places places">
-            <h2 className="near-places__title">
-              Other places in the neighbourhood
-            </h2>
-            <div className="near-places__list places__list">
-              <OfferCard
-                price={80}
-                title="Wood and stone place"
-                type="apartment"
-                imageSrc="img/room.jpg"
-                id="1"
-                rating={4}
-              />
-              <OfferCard
-                price={132}
-                title="Canal View Prinsengracht"
-                type="apartment"
-                imageSrc="img/apartment-02.jpg"
-                id="2"
-                rating={4}
-              />
-              <OfferCard
-                price={180}
-                title="Nice, cozy, warm big bed apartment"
-                type="apartment"
-                imageSrc="img/apartment-03.jpg"
-                id="3"
-                rating={5}
-              />
-            </div>
-          </section>
+          <NearPlacesList
+            offers={nearbyOffers}
+            onOfferHover={setHoveredOffer}
+          />
         </div>
       </main>
     </Layout>

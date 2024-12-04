@@ -53,3 +53,12 @@ type PointMap = {
   latitude: number;
   longitude: number;
 };
+
+type Review = {
+  id: string;
+  avatar: string;
+  name: string;
+  rating: number;
+  text: string;
+  date: string;
+};

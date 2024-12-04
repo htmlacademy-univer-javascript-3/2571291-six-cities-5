@@ -1,6 +1,7 @@
 import Map from '@/components/map';
 import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
+import { CityLocations } from '@/constants';
 import Layout from '@/layout';
 import { useState } from 'react';
 
@@ -64,12 +65,7 @@ function Main({ offers }: Props) {
             <div className="cities__right-section">
               <section className="cities__map">
                 <Map
-                  city={{
-                    title: 'Amsterdam',
-                    latitude: 52.35,
-                    longitude: 4.9,
-                    zoom: 11,
-                  }}
+                  city={CityLocations.AMSTERDAM}
                   points={offers
                     .filter((x) => !!x.location)
                     .map((offer) => ({
