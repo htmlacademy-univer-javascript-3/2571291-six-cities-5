@@ -156,7 +156,7 @@ function Offer({ customHeader }: Props) {
           </div>
           <section className="offer__map map">
             <Map
-              city={CityLocations.AMSTERDAM}
+              city={CityLocations.Amsterdam}
               points={nearbyOffers
                 .filter((x) => !!x.location)
                 .map((offer) => ({

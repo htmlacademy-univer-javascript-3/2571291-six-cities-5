@@ -12,13 +12,13 @@ type Props = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: MarkersIcons.URL_MARKER_DEFAULT,
+  iconUrl: MarkersIcons.UrlMarkerDefault,
   iconSize: [27, 39],
   iconAnchor: [13.5, 39],
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: MarkersIcons.URL_MARKER_CURRENT,
+  iconUrl: MarkersIcons.UrlMarkerCurrent,
   iconSize: [27, 39],
   iconAnchor: [13.5, 39],
 });
