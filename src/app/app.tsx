@@ -15,7 +15,7 @@ import { Routes } from '@/app';
 
 function App() {
   const router = createBrowserRouter([
-    { path: Routes.MAIN, element: <Main offers={offers} /> },
+    { path: Routes.MAIN, element: <Main /> },
     {
       path: Routes.FAVORITES,
       element: (

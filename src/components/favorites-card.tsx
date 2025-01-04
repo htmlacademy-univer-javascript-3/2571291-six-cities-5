@@ -1,3 +1,5 @@
+import type { OfferType } from '@/types';
+
 export default function FavoritesCard({
   price,
   title,
@@ -5,7 +7,7 @@ export default function FavoritesCard({
   imageSrc,
   isPremium,
   rating,
-}: Omit<Offer, 'city'>) {
+}: Omit<OfferType, 'city'>) {
   return (
     <article className="favorites__card place-card">
       {isPremium && (

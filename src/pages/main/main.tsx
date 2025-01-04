@@ -1,16 +1,25 @@
+import LocationsList from '@/components/locations-list';
 import Map from '@/components/map';
 import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
-import { CityLocations } from '@/constants';
 import Layout from '@/layout';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import type { OfferType } from '@/types';
+import { useEffect, useState } from 'react';
+import { fillOffersAction } from '@/store/actions';
+import { offers as mockOffers } from '@/mocks/offers';
 
-type Props = {
-  offers: Offer[];
-};
+function Main() {
+  const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
+  const selectedCity = useAppSelector((state) => state.cityReducer.city);
+  const offers = useAppSelector((state) => state.cityReducer.offers);
+  const dispatch = useAppDispatch();
 
-function Main({ offers }: Props) {
-  const [hoveredOffer, setHoveredOffer] = useState<Offer['id']>();
+  useEffect(() => {
+    dispatch(
+      fillOffersAction(mockOffers.filter((o) => o.city === selectedCity.title))
+    );
+  }, [dispatch, selectedCity]);
 
   return (
     <Layout className="page--gray page--main" showFooter={false}>
@@ -18,38 +27,7 @@ function Main({ offers }: Props) {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <LocationsList />
           </section>
         </div>
         <div className="cities">
@@ -57,7 +35,7 @@ function Main({ offers }: Props) {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offers.length} places to stay in Amsterdam
+                {offers.length} places to stay in {selectedCity.title}
               </b>
               <SortingForm />
               <OffersList offers={offers} onOfferHover={setHoveredOffer} />
@@ -65,7 +43,7 @@ function Main({ offers }: Props) {
             <div className="cities__right-section">
               <section className="cities__map">
                 <Map
-                  city={CityLocations.AMSTERDAM}
+                  city={selectedCity}
                   points={offers
                     .filter((x) => !!x.location)
                     .map((offer) => ({

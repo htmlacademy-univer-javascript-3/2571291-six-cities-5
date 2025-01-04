@@ -7,13 +7,14 @@ import { CityLocations } from '@/constants';
 import { offers } from '@/mocks/offers';
 import { useState } from 'react';
 import NearPlacesList from '@/components/near-places-list';
+import type { OfferType } from '@/types';
 
 type Props = {
   customHeader?: React.ReactNode;
 };
 
 function Offer({ customHeader }: Props) {
-  const [hoveredOffer, setHoveredOffer] = useState<Offer['id']>();
+  const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
   const nearbyOffers = offers.slice(0, 3);
 
   return (

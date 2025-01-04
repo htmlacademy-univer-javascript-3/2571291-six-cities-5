@@ -1,18 +1,13 @@
+import { CityLocations } from '@/constants';
+import type { OfferType } from '@/types';
 import faker from 'faker';
 
 const OfferTypes = ['apartment', 'room', 'house', 'hotel'] as const;
 
-const Cities = [
-  'Paris',
-  'Cologne',
-  'Brussels',
-  'Amsterdam',
-  'Hamburg',
-  'Dusseldorf',
-] as const;
-
-const offers: Offer[] = Array.from({ length: 200 }, (_, i) => {
+const offers: OfferType[] = Array.from({ length: 200 }, (_, i) => {
   const id = faker.datatype.uuid();
+  const city = faker.random.arrayElement(Object.values(CityLocations)).title;
+
   return {
     id: id,
     title: faker.lorem.words(2).replace(/\b\w/g, (l) => l.toUpperCase()),
@@ -22,13 +17,28 @@ const offers: Offer[] = Array.from({ length: 200 }, (_, i) => {
     price: faker.datatype.number(200),
     imageSrc: `img/apartment-0${(i % 3) + 1}.jpg`,
     rating: faker.datatype.float({ min: 1, max: 5, precision: 0.5 }),
-    city: faker.random.arrayElement(Cities),
+    city: city,
     location: {
       id: id,
-      latitude: Number(faker.address.latitude(52.2, 52.5)),
-      longitude: Number(faker.address.longitude(4.65, 5)),
+      latitude: Number(
+        faker.address.latitude(
+          /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
+          (Cities[city].latitude as number) - 0.1,
+          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
+          (Cities[city].latitude as number) + 0.1
+        )
+      ),
+      longitude: Number(
+        faker.address.longitude(
+          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
+          (Cities[city].longitude as number) - 0.1,
+          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
+          (Cities[city].longitude as number) + 0.1
+        )
+      ),
     },
   };
 });
 
-export { Cities, OfferTypes, offers };
+export { OfferTypes, offers };
