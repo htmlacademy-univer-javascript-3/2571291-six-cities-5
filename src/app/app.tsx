@@ -10,7 +10,6 @@ import {
   OfferNotLogged,
   PrivateRoute,
 } from '@/pages';
-import { offers } from '@/mocks/offers';
 import { Routes } from '@/app';
 
 function App() {
@@ -20,7 +19,7 @@ function App() {
       path: Routes.FAVORITES,
       element: (
         <PrivateRoute isAuthenticated>
-          <Favorites offers={offers.filter((x) => x.isFavorite)} />
+          <Favorites offers={[]} />
         </PrivateRoute>
       ),
     },

@@ -1,10 +1,8 @@
-import type { OfferType } from '@/types';
-
 export default function FavoritesCard({
   price,
   title,
   type,
-  imageSrc,
+  previewImage,
   isPremium,
   rating,
 }: Omit<OfferType, 'city'>) {
@@ -19,7 +17,7 @@ export default function FavoritesCard({
         <a href="#">
           <img
             className="place-card__image"
-            src={imageSrc}
+            src={previewImage}
             width="150"
             height="110"
             alt="Place image"

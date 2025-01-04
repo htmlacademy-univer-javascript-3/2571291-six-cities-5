@@ -4,10 +4,9 @@ import ReviewsList from '@/components/reviews-list';
 import { reviews } from '@/mocks/reviews';
 import Map from '@/components/map';
 import { CityLocations } from '@/constants';
-import { offers } from '@/mocks/offers';
 import { useState } from 'react';
 import NearPlacesList from '@/components/near-places-list';
-import type { OfferType } from '@/types';
+import { useAppSelector } from '@/store/hooks';
 
 type Props = {
   customHeader?: React.ReactNode;
@@ -15,7 +14,8 @@ type Props = {
 
 function Offer({ customHeader }: Props) {
   const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
-  const nearbyOffers = offers.slice(0, 3);
+  const { filteredOffers } = useAppSelector((state) => state.reducer);
+  const nearbyOffers: OfferType[] = filteredOffers.slice(0, 3);
 
   return (
     <Layout customHeader={customHeader}>
@@ -161,8 +161,8 @@ function Offer({ customHeader }: Props) {
                 .filter((x) => !!x.location)
                 .map((offer) => ({
                   id: offer.id,
-                  latitude: offer.location!.latitude,
-                  longitude: offer.location!.longitude,
+                  latitude: offer.location.latitude,
+                  longitude: offer.location.longitude,
                 }))}
               selectedPoint={hoveredOffer}
             />

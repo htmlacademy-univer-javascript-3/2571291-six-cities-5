@@ -1,9 +1,7 @@
-import { fillOffersAction } from '@/store/actions';
+import { setFilteredOffersAction } from '@/store/actions';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useState, useCallback, useEffect } from 'react';
-import { offers as mockOffers } from '@/mocks/offers';
 import { SortingOptions } from '@/constants';
-import type { ValueOf } from '@/types';
 
 export function SortingForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,16 +15,21 @@ export function SortingForm() {
     },
     []
   );
-  const city = useAppSelector((state) => state.cityReducer.city.title);
+  const { city: selectedCity, offers } = useAppSelector(
+    (state) => state.reducer
+  );
   const dispatch = useAppDispatch();
 
-  useEffect(() => () => setActiveOption(SortingOptions.Popular), [city]);
+  useEffect(
+    () => () => setActiveOption(SortingOptions.Popular),
+    [selectedCity.name]
+  );
 
   useEffect(() => {
     dispatch(
-      fillOffersAction(
-        mockOffers
-          .filter((o) => o.city === city)
+      setFilteredOffersAction(
+        offers
+          .filter((o) => o.city.name === selectedCity.name)
           .sort((a, b) => {
             switch (activeOption) {
               case SortingOptions.Popular:
@@ -43,7 +46,7 @@ export function SortingForm() {
           })
       )
     );
-  }, [dispatch, activeOption, city]);
+  }, [dispatch, activeOption, selectedCity.name]);
 
   return (
     <form className="places__sorting" action="#" method="get">

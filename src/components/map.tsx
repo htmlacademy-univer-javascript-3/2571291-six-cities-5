@@ -3,10 +3,9 @@ import { Icon, Marker, layerGroup, LatLngBounds } from 'leaflet';
 import { useMap } from '@/hooks';
 import { MarkersIcons } from '@/constants';
 import 'leaflet/dist/leaflet.css';
-import type { CityMap, OfferType, PointMap } from '@/types';
 
 type Props = {
-  city: CityMap;
+  city: OfferCityType;
   points: PointMap[];
   selectedPoint?: OfferType['id'];
 };
@@ -34,7 +33,7 @@ function Map({ city, points, selectedPoint }: Props) {
   }>();
 
   useEffect(() => {
-    if (!map) {
+    if (!map || !points.length) {
       return;
     }
 
@@ -59,7 +58,7 @@ function Map({ city, points, selectedPoint }: Props) {
       markerLayerRef.current.clearLayers();
       markersRef.current = [];
     };
-  }, [map, points.length]);
+  }, [map, JSON.stringify(points)]);
 
   useEffect(() => {
     if (!map || !markersRef.current.length) {

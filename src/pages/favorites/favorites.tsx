@@ -1,6 +1,5 @@
 import FavoritesCard from '@/components/favorites-card';
 import Layout from '@/layout';
-import type { OfferType } from '@/types';
 
 type Props = {
   offers: OfferType[];
@@ -8,13 +7,13 @@ type Props = {
 
 function Favorites({ offers }: Props) {
   const offersByCity = offers.reduce((acc, o) => {
-    if (!o.city) {
+    if (!o.city.name) {
       return acc;
     }
-    if (!acc[o.city]) {
-      acc[o.city] = [];
+    if (!acc[o.city.name]) {
+      acc[o.city.name] = [];
     }
-    acc[o.city].push(o);
+    acc[o.city.name].push(o);
     return acc;
   }, {} as Record<string, OfferType[]>);
 
@@ -37,13 +36,16 @@ function Favorites({ offers }: Props) {
                   <div className="favorites__places">
                     {o.map((x) => (
                       <FavoritesCard
-                        imageSrc={x.imageSrc}
+                        previewImage={x.previewImage}
                         price={x.price}
                         title={x.title}
                         type={x.type}
                         id={x.id}
                         rating={x.rating}
                         key={x.id}
+                        isFavorite={x.isFavorite}
+                        isPremium={x.isPremium}
+                        location={x.location}
                       />
                     ))}
                   </div>
