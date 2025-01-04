@@ -2,24 +2,23 @@ import LocationsList from '@/components/locations-list';
 import Map from '@/components/map';
 import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
+import Spinner from '@/components/spinner';
 import Layout from '@/layout';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import type { OfferType } from '@/types';
-import { useEffect, useState } from 'react';
-import { fillOffersAction } from '@/store/actions';
-import { offers as mockOffers } from '@/mocks/offers';
+import { useAppSelector } from '@/store/hooks';
+import { useState } from 'react';
+import { MainEmpty } from '..';
 
 function Main() {
   const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
-  const selectedCity = useAppSelector((state) => state.cityReducer.city);
-  const offers = useAppSelector((state) => state.cityReducer.offers);
-  const dispatch = useAppDispatch();
+  const {
+    city: selectedCity,
+    isOffersLoading,
+    filteredOffers,
+  } = useAppSelector((state) => state.reducer);
 
-  useEffect(() => {
-    dispatch(
-      fillOffersAction(mockOffers.filter((o) => o.city === selectedCity.title))
-    );
-  }, [dispatch, selectedCity]);
+  if (!isOffersLoading && !filteredOffers.length) {
+    return <MainEmpty />;
+  }
 
   return (
     <Layout className="page--gray page--main" showFooter={false}>
@@ -32,29 +31,36 @@ function Main() {
         </div>
         <div className="cities">
           <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">
-                {offers.length} places to stay in {selectedCity.title}
-              </b>
-              <SortingForm />
-              <OffersList offers={offers} onOfferHover={setHoveredOffer} />
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map">
-                <Map
-                  city={selectedCity}
-                  points={offers
-                    .filter((x) => !!x.location)
-                    .map((offer) => ({
-                      id: offer.id,
-                      latitude: offer.location!.latitude,
-                      longitude: offer.location!.longitude,
-                    }))}
-                  selectedPoint={hoveredOffer}
-                />
-              </section>
-            </div>
+            {isOffersLoading ? (
+              <Spinner />
+            ) : (
+              <>
+                <section className="cities__places places">
+                  <h2 className="visually-hidden">Places</h2>
+                  <b className="places__found">
+                    {filteredOffers.length} places to stay in{' '}
+                    {selectedCity.name}
+                  </b>
+                  <SortingForm />
+                  <OffersList onOfferHover={setHoveredOffer} />
+                </section>
+                <div className="cities__right-section">
+                  <section className="cities__map">
+                    <Map
+                      city={selectedCity}
+                      points={filteredOffers
+                        .filter((x) => !!x.location)
+                        .map((offer) => ({
+                          id: offer.id,
+                          latitude: offer.location.latitude,
+                          longitude: offer.location.longitude,
+                        }))}
+                      selectedPoint={hoveredOffer}
+                    />
+                  </section>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>

@@ -1,27 +1,40 @@
-import { offers } from '@/mocks/offers';
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCityAction, fillOffersAction } from './actions';
+import {
+  changeCityAction,
+  fillOffersAction,
+  setFilteredOffersAction,
+  setOffersLoadingAction,
+} from './actions';
 import { CityLocations } from '@/constants';
-import type { CityLocation } from '@/types';
 
 type InitialStateType = {
-  city: CityLocation;
-  offers: typeof offers;
+  city: OfferCityType;
+  offers: OfferType[];
+  isOffersLoading: boolean;
+  filteredOffers: OfferType[];
 };
 
 const initialState: InitialStateType = {
   city: CityLocations.Paris,
-  offers: offers.filter((o) => o.city === 'Paris'),
+  offers: [],
+  isOffersLoading: false,
+  filteredOffers: [],
 };
 
-const cityReducer = createReducer(initialState, (builder) => {
+const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(changeCityAction, (state, action) => {
       state.city = action.payload;
     })
     .addCase(fillOffersAction, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(setOffersLoadingAction, (state, action) => {
+      state.isOffersLoading = action.payload;
+    })
+    .addCase(setFilteredOffersAction, (state, action) => {
+      state.filteredOffers = action.payload;
     });
 });
 
-export { cityReducer };
+export { reducer };
