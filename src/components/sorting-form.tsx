@@ -43,7 +43,7 @@ export function SortingForm() {
           })
       )
     );
-  }, [dispatch, activeOption]);
+  }, [dispatch, activeOption, city]);
 
   return (
     <form className="places__sorting" action="#" method="get">
