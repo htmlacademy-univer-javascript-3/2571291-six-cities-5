@@ -22,19 +22,14 @@ const offers: OfferType[] = Array.from({ length: 200 }, (_, i) => {
       id: id,
       latitude: Number(
         faker.address.latitude(
-          /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
-          (Cities[city].latitude as number) - 0.1,
-          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
-          (Cities[city].latitude as number) + 0.1
+          CityLocations[city].latitude - 0.1,
+          CityLocations[city].latitude + 0.1
         )
       ),
       longitude: Number(
         faker.address.longitude(
-          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
-          (Cities[city].longitude as number) - 0.1,
-          // @ts-expect-error TS7053, я не знаю как решить эту проблему для faker
-          (Cities[city].longitude as number) + 0.1
+          CityLocations[city].longitude - 0.1,
+          CityLocations[city].longitude + 0.1
         )
       ),
     },

@@ -10,7 +10,7 @@ type InitialStateType = {
 };
 
 const initialState: InitialStateType = {
-  city: CityLocations.PARIS,
+  city: CityLocations.Paris,
   offers: offers.filter((o) => o.city === 'Paris'),
 };
 

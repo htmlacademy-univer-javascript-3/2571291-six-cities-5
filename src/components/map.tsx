@@ -12,15 +12,15 @@ type Props = {
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: MarkersIcons.URL_MARKER_DEFAULT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: MarkersIcons.UrlMarkerDefault,
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: MarkersIcons.URL_MARKER_CURRENT,
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: MarkersIcons.UrlMarkerCurrent,
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 39],
 });
 
 function Map({ city, points, selectedPoint }: Props) {
@@ -77,6 +77,28 @@ function Map({ city, points, selectedPoint }: Props) {
           `${lastSelectedPoint.current.arrayIndex + 1}`
         );
       lastSelectedPoint.current = undefined;
+    } else if (
+      selectedPoint &&
+      lastSelectedPoint.current &&
+      selectedPoint !== lastSelectedPoint.current.id
+    ) {
+      markersRef.current
+        .find(({ id }) => id === lastSelectedPoint.current?.id)
+        ?.marker?.setIcon(defaultCustomIcon);
+      markersRef.current[lastSelectedPoint.current.arrayIndex].marker
+        .getElement()
+        ?.style.setProperty(
+          'z-index',
+          `${lastSelectedPoint.current.arrayIndex + 1}`
+        );
+      const arrayIndex = markersRef.current.findIndex(
+        ({ id }) => id === selectedPoint
+      );
+      markersRef.current[arrayIndex].marker.setIcon(currentCustomIcon);
+      markersRef.current[arrayIndex].marker
+        .getElement()
+        ?.style.setProperty('z-index', '1000');
+      lastSelectedPoint.current = { id: selectedPoint, arrayIndex };
     } else if (selectedPoint) {
       const arrayIndex = markersRef.current.findIndex(
         ({ id }) => id === selectedPoint
