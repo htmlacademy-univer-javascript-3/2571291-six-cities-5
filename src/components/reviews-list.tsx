@@ -1,4 +1,3 @@
-import type { Review } from '@/types';
 import ReviewsItem from './reviews-item';
 
 type Props = {

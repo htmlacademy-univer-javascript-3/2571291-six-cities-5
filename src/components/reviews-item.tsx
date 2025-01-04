@@ -1,5 +1,3 @@
-import type { Review } from '@/types';
-
 type Props = {
   review: Review;
 };

@@ -1,4 +1,3 @@
-import type { OfferType } from '@/types';
 import OfferCard from './offer-card';
 
 type Props = {
@@ -16,13 +15,15 @@ function NearPlacesList({ offers, onOfferHover }: Props) {
             price={x.price}
             title={x.title}
             type={x.type}
-            imageSrc={x.imageSrc}
+            previewImage={x.previewImage}
             id={x.id}
             rating={x.rating}
             key={x.id}
             isFavorite={x.isFavorite}
             isPremium={x.isPremium}
             onHover={onOfferHover}
+            city={x.city}
+            location={x.location}
           />
         ))}
       </div>

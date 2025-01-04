@@ -3,21 +3,21 @@ import { changeCityAction } from '@/store/actions';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 function LocationsList() {
-  const activeCity = useAppSelector((state) => state.cityReducer.city);
+  const activeCity = useAppSelector((state) => state.reducer.city);
   const dispatch = useAppDispatch();
 
   return (
     <ul className="locations__list tabs__list">
       {Object.values(CityLocations).map((city) => (
-        <li className="locations__item" key={city.title}>
+        <li className="locations__item" key={city.name}>
           <a
             className={`locations__item-link tabs__item ${
-              city.title === activeCity.title ? 'tabs__item--active' : ''
+              city.name === activeCity.name ? 'tabs__item--active' : ''
             }`}
             href="#"
             onClick={() => dispatch(changeCityAction(city))}
           >
-            <span>{city.title}</span>
+            <span>{city.name}</span>
           </a>
         </li>
       ))}

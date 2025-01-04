@@ -1,4 +1,3 @@
-import type { OfferType } from '@/types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +8,7 @@ export default function OfferCard({
   type,
   isFavorite,
   isPremium,
-  imageSrc,
+  previewImage,
   rating = 4,
   onHover,
 }: OfferType & { onHover?: (id?: OfferType['id']) => void }) {
@@ -30,7 +29,7 @@ export default function OfferCard({
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
-            src={imageSrc}
+            src={previewImage}
             width="260"
             height="200"
             alt="Place image"
