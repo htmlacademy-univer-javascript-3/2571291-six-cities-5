@@ -1,3 +1,6 @@
+import type { CityLocations } from './constants';
+import type { store } from './store';
+
 /** https://stackoverflow.com/a/39495173/20785115 */
 type Enumerate<
   N extends number,
@@ -19,25 +22,18 @@ type User = {
   email: string;
 };
 
-type OfferType = 'apartment' | 'room' | 'house' | 'hotel';
-type OfferCity =
-  | 'Paris'
-  | 'Cologne'
-  | 'Brussels'
-  | 'Amsterdam'
-  | 'Hamburg'
-  | 'Dusseldorf';
+type OfferTypeType = 'apartment' | 'room' | 'house' | 'hotel';
 
-type Offer = {
+type OfferType = {
   id: string;
   title: string;
-  type: OfferType;
+  type: OfferTypeType;
   isFavorite?: boolean;
   isPremium?: boolean;
   price: number;
   imageSrc: string;
   rating: number;
-  city?: OfferCity;
+  city?: (typeof CityLocations)[keyof typeof CityLocations]['title'];
   location?: PointMap;
 };
 
@@ -62,3 +58,13 @@ type Review = {
   text: string;
   date: string;
 };
+
+type CityLocation = {
+  title: string;
+  latitude: number;
+  longitude: number;
+  zoom: number;
+};
+
+type RootState = ReturnType<typeof store.getState>;
+type AppDispatch = typeof store.dispatch;

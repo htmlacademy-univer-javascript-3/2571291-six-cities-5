@@ -1,3 +1,4 @@
+import type { OfferType } from '@/types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +12,7 @@ export default function OfferCard({
   imageSrc,
   rating = 4,
   onHover,
-}: Offer & { onHover?: (id?: Offer['id']) => void }) {
+}: OfferType & { onHover?: (id?: OfferType['id']) => void }) {
   const [isBookmarked, setIsBookmarked] = useState(isFavorite);
 
   return (

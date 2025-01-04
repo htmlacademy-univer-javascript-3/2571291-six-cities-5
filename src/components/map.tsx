@@ -1,13 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { Icon, Marker, layerGroup } from 'leaflet';
-import useMap from '@/hooks/use-map';
+import { Icon, Marker, layerGroup, LatLngBounds } from 'leaflet';
+import { useMap } from '@/hooks';
 import { MarkersIcons } from '@/constants';
 import 'leaflet/dist/leaflet.css';
+import type { CityMap, OfferType, PointMap } from '@/types';
 
 type Props = {
   city: CityMap;
   points: PointMap[];
-  selectedPoint?: Offer['id'];
+  selectedPoint?: OfferType['id'];
 };
 
 const defaultCustomIcon = new Icon({
@@ -26,8 +27,11 @@ function Map({ city, points, selectedPoint }: Props) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const markerLayerRef = useRef(layerGroup());
-  const markersRef = useRef<{ marker: Marker; id: Offer['id'] }[]>([]);
-  const lastSelectedPoint = useRef<{ id: Offer['id']; arrayIndex: number }>();
+  const markersRef = useRef<{ marker: Marker; id: OfferType['id'] }[]>([]);
+  const lastSelectedPoint = useRef<{
+    id: OfferType['id'];
+    arrayIndex: number;
+  }>();
 
   useEffect(() => {
     if (!map) {
@@ -37,25 +41,29 @@ function Map({ city, points, selectedPoint }: Props) {
     if (!markersRef.current.length) {
       points.forEach(({ latitude, longitude, id }, i) => {
         const marker = new Marker({ lat: latitude, lng: longitude })
-          .setIcon(
-            selectedPoint && id === selectedPoint
-              ? currentCustomIcon
-              : defaultCustomIcon
-          )
+          .setIcon(defaultCustomIcon)
           .addTo(markerLayerRef.current);
         marker.getElement()?.style.setProperty('z-index', `${i + 1}`);
         markersRef.current.push({ marker, id });
       });
 
       markerLayerRef.current.addTo(map);
-    } else {
-      markersRef.current.forEach(({ marker, id }) => {
-        marker.setIcon(
-          selectedPoint && id === selectedPoint
-            ? currentCustomIcon
-            : defaultCustomIcon
-        );
-      });
+    }
+
+    const bounds = new LatLngBounds(
+      points.map(({ latitude, longitude }) => [latitude, longitude])
+    );
+    map.fitBounds(bounds, { padding: [50, 50] });
+
+    return () => {
+      markerLayerRef.current.clearLayers();
+      markersRef.current = [];
+    };
+  }, [map, points.length]);
+
+  useEffect(() => {
+    if (!map || !markersRef.current.length) {
+      return;
     }
 
     if (lastSelectedPoint.current && !selectedPoint) {
@@ -85,13 +93,7 @@ function Map({ city, points, selectedPoint }: Props) {
     } else {
       lastSelectedPoint.current = undefined;
     }
-
-    return () => {
-      markerLayerRef.current?.clearLayers();
-      markersRef.current = [];
-      lastSelectedPoint.current = undefined;
-    };
-  }, [map, points, selectedPoint]);
+  }, [map, selectedPoint, markersRef.current.length]);
 
   return <div style={{ height: '100%' }} ref={mapRef} />;
 }

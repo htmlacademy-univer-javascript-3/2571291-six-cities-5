@@ -1,7 +1,8 @@
+import type { OfferType } from '@/types';
 import OfferCard from './offer-card';
 
 type Props = {
-  offers: Offer[];
+  offers: OfferType[];
   onOfferHover?: React.ComponentProps<typeof OfferCard>['onHover'];
 };
 

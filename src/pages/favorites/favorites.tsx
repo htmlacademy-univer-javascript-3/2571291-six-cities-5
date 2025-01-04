@@ -1,8 +1,9 @@
 import FavoritesCard from '@/components/favorites-card';
 import Layout from '@/layout';
+import type { OfferType } from '@/types';
 
 type Props = {
-  offers: Offer[];
+  offers: OfferType[];
 };
 
 function Favorites({ offers }: Props) {
@@ -15,7 +16,7 @@ function Favorites({ offers }: Props) {
     }
     acc[o.city].push(o);
     return acc;
-  }, {} as Record<OfferCity, Offer[]>);
+  }, {} as Record<string, OfferType[]>);
 
   return (
     <Layout>
