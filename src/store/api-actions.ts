@@ -43,8 +43,8 @@ const fetchUserAction = createAsyncThunk<
     state: RootState;
     extra: AxiosInstance;
   }
->('fetch/login', (_, { extra: api, dispatch }) => {
-  return api
+>('fetch/login', (_, { extra: api, dispatch }) =>
+  api
     .get<User>(ApiRoutes.Login)
     .then((response) => {
       dispatch(setAuthorizationStatusAction(AuthorizationStatus.Authorized));
@@ -57,8 +57,8 @@ const fetchUserAction = createAsyncThunk<
     })
     .finally(() => {
       dispatch(setUserDataLoadingAction(false));
-    });
-});
+    })
+);
 
 const loginAction = createAsyncThunk<
   void,
