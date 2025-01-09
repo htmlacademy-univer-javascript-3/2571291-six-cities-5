@@ -4,8 +4,9 @@ import { App } from '@/app';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { ToastContainer } from 'react-toastify';
-import { fetchOffersAction } from './store/api-actions';
+import { fetchOffersAction, fetchUserAction } from './store/api-actions';
 
+store.dispatch(fetchUserAction());
 store.dispatch(fetchOffersAction());
 
 const root = ReactDOM.createRoot(

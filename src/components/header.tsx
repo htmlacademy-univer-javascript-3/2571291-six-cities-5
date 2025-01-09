@@ -1,14 +1,16 @@
 import { Routes } from '@/app';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { logoutAction } from '@/store/api-actions';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { AuthorizationStatus } from '@/store/types';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function Header({
-  authenticated = true,
-  navItems = [],
-}: {
-  authenticated?: boolean;
-  navItems?: React.ReactNode[];
-}) {
+export default function Header() {
+  const { authorizationStatus, userData } = useAppSelector(
+    (state) => state.reducer
+  );
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   return (
     <header className="header">
       <div className="container">
@@ -24,7 +26,7 @@ export default function Header({
               />
             </Link>
           </div>
-          {authenticated ? (
+          {authorizationStatus === AuthorizationStatus.Authorized ? (
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
@@ -34,26 +36,41 @@ export default function Header({
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
+                      {userData?.email}
                     </span>
                     <span className="header__favorite-count">3</span>
                   </Link>
                 </li>
                 <li className="header__nav-item">
-                  <Link className="header__nav-link" to={Routes.LOGIN}>
+                  <Link
+                    className="header__nav-link"
+                    to="#"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      dispatch(logoutAction()).then(() =>
+                        navigate(Routes.LOGIN)
+                      );
+                    }}
+                  >
                     <span className="header__signout">Sign out</span>
                   </Link>
                 </li>
               </ul>
             </nav>
           ) : (
-            navItems.length !== 0 && (
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  {navItems.map((item) => item)}
-                </ul>
-              </nav>
-            )
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                <li className="header__nav-item user" key="header__login">
+                  <a
+                    className="header__nav-link header__nav-link--profile"
+                    href="/login"
+                  >
+                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                    <span className="header__login">Sign in</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           )}
         </div>
       </div>

@@ -1,5 +1,6 @@
-import Header from '@/components/header';
 import Layout from '@/layout';
+import { store } from '@/store';
+import { loginAction } from '@/store/api-actions';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -7,9 +8,9 @@ function Login() {
 
   return (
     <Layout
-      customHeader={<Header authenticated={false} />}
       className="page--gray page--login"
       showFooter={false}
+      showHeader={false}
     >
       <main className="page__main page__main--login">
         <div className="page__login-container container">
@@ -21,7 +22,16 @@ function Login() {
               method="post"
               onSubmit={(event) => {
                 event.preventDefault();
-                navigate('/');
+                const fd = new FormData(event.target as HTMLFormElement);
+                const email = fd.get('email') as string | null;
+                const password = fd.get('password') as string | null;
+                if (!email || !password) {
+                  return;
+                }
+                store
+                  .dispatch(loginAction({ email, password }))
+                  .unwrap()
+                  .then(() => navigate('/'));
               }}
             >
               <div className="login__input-wrapper form__input-wrapper">

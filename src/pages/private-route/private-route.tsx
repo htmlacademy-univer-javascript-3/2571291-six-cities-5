@@ -1,12 +1,22 @@
+import Spinner from '@/components/spinner';
+import { useAppSelector } from '@/store/hooks';
+import { AuthorizationStatus } from '@/store/types';
 import { Navigate } from 'react-router-dom';
 
-type Props = { isAuthenticated: boolean };
+function PrivateRoute({ children }: React.PropsWithChildren) {
+  const { authorizationStatus, userDataLoading } = useAppSelector(
+    (state) => state.reducer
+  );
 
-function PrivateRoute({
-  children,
-  isAuthenticated,
-}: React.PropsWithChildren<Props>) {
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  if (userDataLoading) {
+    return <Spinner />;
+  }
+
+  return authorizationStatus === AuthorizationStatus.Authorized ? (
+    children
+  ) : (
+    <Navigate to="/login" />
+  );
 }
 
 export { PrivateRoute };

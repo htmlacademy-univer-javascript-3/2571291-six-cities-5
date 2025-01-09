@@ -7,6 +7,15 @@ export type RootState = {
     offers: OfferType[];
     isOffersLoading: boolean;
     filteredOffers: OfferType[];
+    authorizationStatus: AuthorizationStatus;
+    userData: User | undefined;
+    userDataLoading: boolean;
   };
 };
+
 export type AppDispatch = typeof store.dispatch;
+
+export enum AuthorizationStatus {
+  Authorized = 'AUTHORIZED',
+  Unauthorized = 'UNAUTHORIZED',
+}

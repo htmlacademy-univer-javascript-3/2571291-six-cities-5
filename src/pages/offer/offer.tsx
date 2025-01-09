@@ -8,17 +8,13 @@ import { useState } from 'react';
 import NearPlacesList from '@/components/near-places-list';
 import { useAppSelector } from '@/store/hooks';
 
-type Props = {
-  customHeader?: React.ReactNode;
-};
-
-function Offer({ customHeader }: Props) {
+function Offer() {
   const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
   const { filteredOffers } = useAppSelector((state) => state.reducer);
   const nearbyOffers: OfferType[] = filteredOffers.slice(0, 3);
 
   return (
-    <Layout customHeader={customHeader}>
+    <Layout>
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
