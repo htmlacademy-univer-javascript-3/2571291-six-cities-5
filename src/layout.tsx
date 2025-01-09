@@ -4,17 +4,17 @@ import Header from './components/header';
 export default function Layout({
   children,
   className,
-  customHeader,
+  showHeader = true,
   showFooter = true,
 }: {
   children: React.ReactNode;
   className?: string;
-  customHeader?: React.ReactNode;
+  showHeader?: boolean;
   showFooter?: boolean;
 }) {
   return (
     <div className={`page ${className ? className : ''}`}>
-      {customHeader === undefined ? <Header /> : customHeader}
+      {showHeader && <Header />}
       {children}
       {showFooter && <Footer />}
     </div>

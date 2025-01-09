@@ -42,4 +42,6 @@ export const REQUEST_TIMEOUT = 5000;
 
 export const ApiRoutes = {
   Offers: '/offers',
+  Login: '/login',
+  Logout: '/logout',
 } as const;

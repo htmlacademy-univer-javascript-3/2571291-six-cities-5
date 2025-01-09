@@ -18,7 +18,7 @@ function App() {
     {
       path: Routes.FAVORITES,
       element: (
-        <PrivateRoute isAuthenticated>
+        <PrivateRoute>
           <Favorites offers={[]} />
         </PrivateRoute>
       ),

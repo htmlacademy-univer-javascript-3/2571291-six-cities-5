@@ -7,6 +7,11 @@ import { toast } from 'react-toastify';
 type DetailMessageType = {
   type: string;
   message: string;
+  details?: {
+    property: string;
+    value: string;
+    messages: string[];
+  }[];
 };
 
 const StatusCodeMapping: Record<number, boolean> = {
@@ -39,8 +44,17 @@ const createApi = () => {
     (error: AxiosError<DetailMessageType>) => {
       if (error.response && shouldDisplayError(error.response)) {
         const detailMessage = error.response.data;
+        const details = detailMessage.details;
 
-        toast.warn(detailMessage.message);
+        if (details) {
+          details.forEach((detail) => {
+            detail.messages.forEach((message) => {
+              toast.error(message);
+            });
+          });
+        } else {
+          toast.error(detailMessage.message);
+        }
       }
 
       throw error;

@@ -2,23 +2,23 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   changeCityAction,
   fillOffersAction,
+  setAuthorizationStatusAction,
   setFilteredOffersAction,
   setOffersLoadingAction,
+  setUserDataAction,
+  setUserDataLoadingAction,
 } from './actions';
 import { CityLocations } from '@/constants';
+import { AuthorizationStatus, RootState } from './types';
 
-type InitialStateType = {
-  city: OfferCityType;
-  offers: OfferType[];
-  isOffersLoading: boolean;
-  filteredOffers: OfferType[];
-};
-
-const initialState: InitialStateType = {
+const initialState: RootState['reducer'] = {
   city: CityLocations.Paris,
   offers: [],
   isOffersLoading: false,
   filteredOffers: [],
+  authorizationStatus: AuthorizationStatus.Unauthorized,
+  userData: undefined,
+  userDataLoading: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -34,6 +34,15 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFilteredOffersAction, (state, action) => {
       state.filteredOffers = action.payload;
+    })
+    .addCase(setAuthorizationStatusAction, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setUserDataAction, (state, action) => {
+      state.userData = action.payload;
+    })
+    .addCase(setUserDataLoadingAction, (state, action) => {
+      state.userDataLoading = action.payload;
     });
 });
 
