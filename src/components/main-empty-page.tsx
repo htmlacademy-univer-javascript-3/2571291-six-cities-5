@@ -1,7 +1,7 @@
 import LocationsList from '@/components/locations-list';
 import Layout from '@/layout';
 
-function MainEmpty() {
+function MainEmptyPage() {
   return (
     <Layout className="page--gray page--main" showFooter={false}>
       <main className="page__main page__main--index page__main--index-empty">
@@ -30,4 +30,4 @@ function MainEmpty() {
   );
 }
 
-export { MainEmpty };
+export { MainEmptyPage };

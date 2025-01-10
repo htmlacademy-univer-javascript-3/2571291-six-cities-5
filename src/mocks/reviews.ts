@@ -1,4 +1,3 @@
-import { Review } from '@/types';
 import faker from 'faker';
 
 const reviews: Review[] = Array.from({ length: 10 }, () => ({

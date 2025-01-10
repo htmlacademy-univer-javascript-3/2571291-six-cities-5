@@ -4,11 +4,11 @@ import { AuthorizationStatus } from '@/store/types';
 import { Navigate } from 'react-router-dom';
 
 function PrivateRoute({ children }: React.PropsWithChildren) {
-  const { authorizationStatus, userDataLoading } = useAppSelector(
-    (state) => state.reducer
+  const { authorizationStatus, isUserDataLoading } = useAppSelector(
+    (state) => state.userReducer
   );
 
-  if (userDataLoading) {
+  if (isUserDataLoading) {
     return <Spinner />;
   }
 

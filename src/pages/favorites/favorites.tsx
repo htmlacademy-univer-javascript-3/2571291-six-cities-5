@@ -1,21 +1,34 @@
 import FavoritesCard from '@/components/favorites-card';
+import { FavoritesEmptyPage } from '@/components/favorites-empty-page';
 import Layout from '@/layout';
+import { useAppSelector } from '@/store/hooks';
+import React from 'react';
 
-type Props = {
-  offers: OfferType[];
-};
+function Favorites() {
+  const { offers, isOffersLoading } = useAppSelector(
+    (state) => state.offersReducer
+  );
 
-function Favorites({ offers }: Props) {
-  const offersByCity = offers.reduce((acc, o) => {
-    if (!o.city.name) {
+  const offersByCity = React.useMemo(() => {
+    if (isOffersLoading) {
+      return {};
+    }
+    return offers.reduce((acc, o) => {
+      if (!o.city.name) {
+        return acc;
+      }
+      if (!acc[o.city.name]) {
+        acc[o.city.name] = [];
+      }
+      acc[o.city.name].push(o);
       return acc;
-    }
-    if (!acc[o.city.name]) {
-      acc[o.city.name] = [];
-    }
-    acc[o.city.name].push(o);
-    return acc;
-  }, {} as Record<string, OfferType[]>);
+    }, {} as Record<string, OfferType[]>);
+
+    // Так как React не может обрабатывать массивы, а если передать points, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [isOffersLoading]);
+
+  return <FavoritesEmptyPage />;
 
   return (
     <Layout>

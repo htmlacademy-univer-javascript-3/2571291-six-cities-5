@@ -1,3 +1,4 @@
+import React from 'react';
 import OfferCard from './offer-card';
 
 type Props = {
@@ -5,8 +6,8 @@ type Props = {
   onOfferHover?: React.ComponentProps<typeof OfferCard>['onHover'];
 };
 
-function NearPlacesList({ offers, onOfferHover }: Props) {
-  return (
+const NearPlacesList = React.memo(
+  ({ offers, onOfferHover }: Props) => (
     <section className="near-places places">
       <h2 className="near-places__title">Other places in the neighbourhood</h2>
       <div className="near-places__list places__list">
@@ -28,7 +29,11 @@ function NearPlacesList({ offers, onOfferHover }: Props) {
         ))}
       </div>
     </section>
-  );
-}
+  ),
+  (prev, next) =>
+    prev.onOfferHover === next.onOfferHover &&
+    JSON.stringify(prev.offers) === JSON.stringify(next.offers)
+);
+NearPlacesList.displayName = 'NearPlacesList';
 
 export default NearPlacesList;

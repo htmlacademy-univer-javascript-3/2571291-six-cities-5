@@ -11,17 +11,20 @@ import {
 import { CityLocations } from '@/constants';
 import { AuthorizationStatus, RootState } from './types';
 
-const initialState: RootState['reducer'] = {
+const initialOffersState: RootState['offersReducer'] = {
   city: CityLocations.Paris,
   offers: [],
   isOffersLoading: false,
   filteredOffers: [],
-  authorizationStatus: AuthorizationStatus.Unauthorized,
-  userData: undefined,
-  userDataLoading: true,
 };
 
-const reducer = createReducer(initialState, (builder) => {
+const initialUserState: RootState['userReducer'] = {
+  userData: undefined,
+  isUserDataLoading: true,
+  authorizationStatus: AuthorizationStatus.Unauthorized,
+};
+
+const offersReducer = createReducer(initialOffersState, (builder) => {
   builder
     .addCase(changeCityAction, (state, action) => {
       state.city = action.payload;
@@ -34,7 +37,11 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFilteredOffersAction, (state, action) => {
       state.filteredOffers = action.payload;
-    })
+    });
+});
+
+const userReducer = createReducer(initialUserState, (builder) => {
+  builder
     .addCase(setAuthorizationStatusAction, (state, action) => {
       state.authorizationStatus = action.payload;
     })
@@ -42,8 +49,8 @@ const reducer = createReducer(initialState, (builder) => {
       state.userData = action.payload;
     })
     .addCase(setUserDataLoadingAction, (state, action) => {
-      state.userDataLoading = action.payload;
+      state.isUserDataLoading = action.payload;
     });
 });
 
-export { reducer };
+export { offersReducer, userReducer };

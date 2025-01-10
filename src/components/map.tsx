@@ -32,21 +32,25 @@ function Map({ city, points, selectedPoint }: Props) {
     arrayIndex: number;
   }>();
 
+  const staticPoints = JSON.stringify(points);
+
   useEffect(() => {
     if (!map || !points.length) {
       return;
     }
 
+    const markerLayer = markerLayerRef.current;
+
     if (!markersRef.current.length) {
       points.forEach(({ latitude, longitude, id }, i) => {
         const marker = new Marker({ lat: latitude, lng: longitude })
           .setIcon(defaultCustomIcon)
-          .addTo(markerLayerRef.current);
+          .addTo(markerLayer);
         marker.getElement()?.style.setProperty('z-index', `${i + 1}`);
         markersRef.current.push({ marker, id });
       });
 
-      markerLayerRef.current.addTo(map);
+      markerLayer.addTo(map);
     }
 
     const bounds = new LatLngBounds(
@@ -55,10 +59,12 @@ function Map({ city, points, selectedPoint }: Props) {
     map.fitBounds(bounds, { padding: [50, 50] });
 
     return () => {
-      markerLayerRef.current.clearLayers();
+      markerLayer.clearLayers();
       markersRef.current = [];
     };
-  }, [map, JSON.stringify(points)]);
+    // Так как React не может обрабатывать массивы, а если передать points, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [map, staticPoints]);
 
   useEffect(() => {
     if (!map || !markersRef.current.length) {

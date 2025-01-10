@@ -1,15 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import {
-  Favorites,
-  FavoritesEmpty,
-  Login,
-  Main,
-  MainEmpty,
-  NotFound,
-  Offer,
-  OfferNotLogged,
-  PrivateRoute,
-} from '@/pages';
+import { Favorites, Login, Main, NotFound, Offer, PrivateRoute } from '@/pages';
 import { Routes } from '@/app';
 
 function App() {
@@ -19,14 +9,11 @@ function App() {
       path: Routes.FAVORITES,
       element: (
         <PrivateRoute>
-          <Favorites offers={[]} />
+          <Favorites />
         </PrivateRoute>
       ),
     },
-    { path: Routes.FAVORITES_EMPTY, element: <FavoritesEmpty /> },
     { path: Routes.LOGIN, element: <Login /> },
-    { path: Routes.MAIN_EMPTY, element: <MainEmpty /> },
-    { path: Routes.OFFER_NOT_LOGGED, element: <OfferNotLogged /> },
     { path: Routes.OFFER, element: <Offer /> },
     { path: '*', element: <NotFound /> },
   ]);

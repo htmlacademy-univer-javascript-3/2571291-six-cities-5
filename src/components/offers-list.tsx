@@ -1,19 +1,19 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import OfferCard from './offer-card';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { setFilteredOffersAction } from '@/store/actions';
 
 type Props = {
   onOfferHover?: React.ComponentProps<typeof OfferCard>['onHover'];
 };
 
-function OffersList({ onOfferHover }: Props) {
+const OffersList = React.memo(({ onOfferHover }: Props) => {
   const {
     city: selectedCity,
     isOffersLoading,
     offers,
     filteredOffers,
-  } = useAppSelector((state) => state.reducer);
+  } = useAppSelector((state) => state.offersReducer);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -26,7 +26,10 @@ function OffersList({ onOfferHover }: Props) {
         offers.filter((x) => x.city.name === selectedCity.name)
       )
     );
-  }, [selectedCity, isOffersLoading]);
+
+    // Так как React не может обрабатывать массивы, а если передать offers, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [selectedCity, isOffersLoading, dispatch]);
 
   return (
     <div className="cities__places-list places__list tabs__content">
@@ -48,6 +51,7 @@ function OffersList({ onOfferHover }: Props) {
       ))}
     </div>
   );
-}
+});
+OffersList.displayName = 'OffersList';
 
 export default OffersList;
