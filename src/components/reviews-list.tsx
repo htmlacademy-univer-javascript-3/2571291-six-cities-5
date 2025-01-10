@@ -1,11 +1,12 @@
+import React from 'react';
 import ReviewsItem from './reviews-item';
 
 type Props = {
   reviews: Review[];
 };
 
-function ReviewsList({ reviews }: Props) {
-  return (
+const ReviewsList = React.memo(
+  ({ reviews }: Props) => (
     <>
       <h2 className="reviews__title">
         Reviews &middot;{' '}
@@ -17,7 +18,10 @@ function ReviewsList({ reviews }: Props) {
         ))}
       </ul>
     </>
-  );
-}
+  ),
+  (prevProps, nextProps) =>
+    JSON.stringify(prevProps.reviews) === JSON.stringify(nextProps.reviews)
+);
+ReviewsList.displayName = 'ReviewsList';
 
 export default ReviewsList;

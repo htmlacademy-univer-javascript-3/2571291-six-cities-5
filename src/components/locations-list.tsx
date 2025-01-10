@@ -3,7 +3,7 @@ import { changeCityAction } from '@/store/actions';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 function LocationsList() {
-  const activeCity = useAppSelector((state) => state.reducer.city);
+  const activeCity = useAppSelector((state) => state.offersReducer.city);
   const dispatch = useAppDispatch();
 
   return (

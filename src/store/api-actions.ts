@@ -29,7 +29,7 @@ const fetchOffersAction = createAsyncThunk<
   dispatch(
     setFilteredOffersAction(
       response.data.filter(
-        (offer) => offer.city.name === state.reducer.city.name
+        (offer) => offer.city.name === state.offersReducer.city.name
       )
     )
   );

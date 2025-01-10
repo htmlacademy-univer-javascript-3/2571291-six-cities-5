@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const { authorizationStatus, userData } = useAppSelector(
-    (state) => state.reducer
+    (state) => state.userReducer
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

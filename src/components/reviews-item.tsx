@@ -1,9 +1,11 @@
+import React from 'react';
+
 type Props = {
   review: Review;
 };
 
-function ReviewsItem({ review }: Props) {
-  return (
+const ReviewsItem = React.memo(
+  ({ review }: Props) => (
     <li className="reviews__item">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
@@ -30,7 +32,9 @@ function ReviewsItem({ review }: Props) {
         </time>
       </div>
     </li>
-  );
-}
+  ),
+  (prevProps, nextProps) => prevProps.review.id === nextProps.review.id
+);
+ReviewsItem.displayName = 'ReviewsItem';
 
 export default ReviewsItem;

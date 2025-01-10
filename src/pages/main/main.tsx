@@ -1,4 +1,5 @@
 import LocationsList from '@/components/locations-list';
+import { MainEmptyPage } from '@/components/main-empty-page';
 import Map from '@/components/map';
 import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
@@ -6,7 +7,6 @@ import Spinner from '@/components/spinner';
 import Layout from '@/layout';
 import { useAppSelector } from '@/store/hooks';
 import { useState } from 'react';
-import { MainEmpty } from '..';
 
 function Main() {
   const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
@@ -14,10 +14,10 @@ function Main() {
     city: selectedCity,
     isOffersLoading,
     filteredOffers,
-  } = useAppSelector((state) => state.reducer);
+  } = useAppSelector((state) => state.offersReducer);
 
   if (!isOffersLoading && !filteredOffers.length) {
-    return <MainEmpty />;
+    return <MainEmptyPage />;
   }
 
   return (

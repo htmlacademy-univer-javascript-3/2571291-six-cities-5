@@ -1,12 +1,14 @@
-export default function FavoritesCard({
-  price,
-  title,
-  type,
-  previewImage,
-  isPremium,
-  rating,
-}: Omit<OfferType, 'city'>) {
-  return (
+import React from 'react';
+
+const FavoritesCard = React.memo(
+  ({
+    price,
+    title,
+    type,
+    previewImage,
+    isPremium,
+    rating,
+  }: Omit<OfferType, 'city'>) => (
     <article className="favorites__card place-card">
       {isPremium && (
         <div className="place-card__mark">
@@ -52,5 +54,8 @@ export default function FavoritesCard({
         <p className="place-card__type">{type}</p>
       </div>
     </article>
-  );
-}
+  )
+);
+FavoritesCard.displayName = 'FavoritesCard';
+
+export default FavoritesCard;

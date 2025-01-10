@@ -10,7 +10,7 @@ import { useAppSelector } from '@/store/hooks';
 
 function Offer() {
   const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
-  const { filteredOffers } = useAppSelector((state) => state.reducer);
+  const { filteredOffers } = useAppSelector((state) => state.offersReducer);
   const nearbyOffers: OfferType[] = filteredOffers.slice(0, 3);
 
   return (

@@ -15,9 +15,11 @@ export function SortingForm() {
     },
     []
   );
-  const { city: selectedCity, offers } = useAppSelector(
-    (state) => state.reducer
-  );
+  const {
+    city: selectedCity,
+    offers,
+    isOffersLoading,
+  } = useAppSelector((state) => state.offersReducer);
   const dispatch = useAppDispatch();
 
   useEffect(
@@ -26,6 +28,10 @@ export function SortingForm() {
   );
 
   useEffect(() => {
+    if (isOffersLoading) {
+      return;
+    }
+
     dispatch(
       setFilteredOffersAction(
         offers
@@ -46,7 +52,10 @@ export function SortingForm() {
           })
       )
     );
-  }, [dispatch, activeOption, selectedCity.name]);
+
+    // Так как React не может обрабатывать массивы, а если передать offers, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [dispatch, activeOption, selectedCity.name, isOffersLoading]);
 
   return (
     <form className="places__sorting" action="#" method="get">
