@@ -1,4 +1,4 @@
-import { BASE_API_URL, REQUEST_TIMEOUT } from '@/constants';
+import { ApiRoutes, BASE_API_URL, REQUEST_TIMEOUT } from '@/constants';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { getToken } from './token';
 import { StatusCodes } from 'http-status-codes';
@@ -46,14 +46,34 @@ const createApi = () => {
         const detailMessage = error.response.data;
         const details = detailMessage.details;
 
-        if (details) {
+        if (details?.length) {
           details.forEach((detail) => {
             detail.messages.forEach((message) => {
               toast.error(message);
             });
           });
         } else {
-          toast.error(detailMessage.message);
+          if (
+            !([ApiRoutes.Favorites, ApiRoutes.Login] as string[]).includes(
+              `/${(error.request as XMLHttpRequest).responseURL
+                .split('/')
+                .pop()}`
+            )
+          ) {
+            switch (error.response.status) {
+              case StatusCodes.BAD_REQUEST:
+                toast.error('Bad request');
+                break;
+              case StatusCodes.UNAUTHORIZED:
+                toast.error('You have to be authorized');
+                break;
+              case StatusCodes.NOT_FOUND:
+                toast.error('Not found');
+                break;
+              default:
+                toast.error('Something went wrong');
+            }
+          }
         }
       }
 
