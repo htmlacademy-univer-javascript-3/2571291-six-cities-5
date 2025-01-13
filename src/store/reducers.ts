@@ -53,7 +53,6 @@ const offersReducer = createReducer(initialOffersState, (builder) => {
       state.isOffersLoading = action.payload;
     })
     .addCase(setFilteredOffersAction, (state, action) => {
-      console.log('Setting filtered offers');
       state.filteredOffers = action.payload;
     })
     .addCase(updateOfferFavoriteStatusAction, (state, action) => {

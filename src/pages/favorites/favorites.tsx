@@ -30,9 +30,13 @@ function Favorites() {
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [isFavoritesLoading, favorites.length]);
 
-  if (isFavoritesLoading) return <Spinner />;
+  if (isFavoritesLoading) {
+    return <Spinner />;
+  }
 
-  if (!favorites.length) return <FavoritesEmptyPage />;
+  if (!favorites.length) {
+    return <FavoritesEmptyPage />;
+  }
 
   return (
     <Layout>

@@ -7,7 +7,7 @@ import Spinner from '@/components/spinner';
 import Layout from '@/layout';
 import { setFilteredOffersAction } from '@/store/actions';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { useLayoutEffect, useState, useEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 function Main() {
   const [hoveredOffer, setHoveredOffer] = useState<OffersType['id']>();
@@ -33,11 +33,6 @@ function Main() {
     // Так как React не может обрабатывать массивы, а если передать offers, то ререндер будет постоянным
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [selectedCity, isOffersLoading, dispatch]);
-
-  useEffect(
-    () => console.log(filteredOffers),
-    [JSON.stringify(filteredOffers)]
-  );
 
   if (!isOffersLoading && !filteredOffers.length) {
     return <MainEmptyPage />;

@@ -32,17 +32,20 @@ function Offer() {
     if (isOfferLoading || isOfferLoading || !offer) {
       return [];
     }
+
     return offers
       .filter((x) => x.city.name === offer.city.name && x.id !== offer.id)
       .slice(0, 3);
-  }, [isOffersLoading, isOfferLoading, !!offer]);
+    // Так как React не может обрабатывать массивы, а если передать offers, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [isOffersLoading, isOfferLoading, offer]);
 
   useLayoutEffect(() => {
     if (!offerId) {
       return;
     }
     dispatch(fetchOfferByIdAction(offerId));
-  }, [offerId]);
+  }, [offerId, dispatch]);
 
   if (isOfferLoading) {
     return <Spinner />;
@@ -58,17 +61,15 @@ function Offer() {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {offer.images.map((image) => {
-                return (
-                  <div className="offer__image-wrapper" key={image}>
-                    <img
-                      className="offer__image"
-                      src={image}
-                      alt="Photo studio"
-                    />
-                  </div>
-                );
-              })}
+              {offer.images.map((image) => (
+                <div className="offer__image-wrapper" key={image}>
+                  <img
+                    className="offer__image"
+                    src={image}
+                    alt="Photo studio"
+                  />
+                </div>
+              ))}
             </div>
           </div>
           <div className="offer__container container">
@@ -86,7 +87,7 @@ function Offer() {
                     offer.isFavorite ? 'offer__bookmark-button--active' : ''
                   )}
                   type="button"
-                  onClick={() =>
+                  onClick={() => {
                     dispatch(
                       changeFavoriteStatusAction({
                         id: offer.id,
@@ -94,8 +95,8 @@ function Offer() {
                           ? FavoriteStatus.NotFavorite
                           : FavoriteStatus.Favorite,
                       })
-                    )
-                  }
+                    );
+                  }}
                 >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark" />
@@ -105,9 +106,7 @@ function Offer() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span
-                    style={{ width: `${(offer.rating / 5) * 100}%` }}
-                  ></span>
+                  <span style={{ width: `${(offer.rating / 5) * 100}%` }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">
@@ -164,15 +163,13 @@ function Offer() {
                 <ReviewsList comments={comments} />
                 {authorizationStatus === AuthorizationStatus.Authorized && (
                   <ReviewsForm
-                    onSubmit={(data) =>
-                      dispatch(
-                        sendCommentAction({
-                          id: offer.id,
-                          comment: data.review,
-                          rating: data.rating,
-                        })
-                      ).unwrap()
-                    }
+                    onSubmit={(data) => dispatch(
+                      sendCommentAction({
+                        id: offer.id,
+                        comment: data.review,
+                        rating: data.rating,
+                      })
+                    ).unwrap()}
                   />
                 )}
               </section>
@@ -182,10 +179,10 @@ function Offer() {
             <Map
               city={CityLocations.Amsterdam}
               points={[
-                ...nearbyOffers.map((offer) => ({
-                  id: offer.id,
-                  latitude: offer.location.latitude,
-                  longitude: offer.location.longitude,
+                ...nearbyOffers.map((_offer) => ({
+                  id: _offer.id,
+                  latitude: _offer.location.latitude,
+                  longitude: _offer.location.longitude,
                 })),
                 {
                   id: offer.id,

@@ -217,8 +217,8 @@ const sendCommentAction = createAsyncThunk<
   }
 >(
   'send/comment',
-  ({ id, comment, rating }, { extra: api, dispatch, getState }) => {
-    return api
+  ({ id, comment, rating }, { extra: api, dispatch, getState }) =>
+    api
       .post<CommentType>(`${ApiRoutes.Comments}/${id}`, { comment, rating })
       .then((response) => {
         dispatch(
@@ -230,8 +230,7 @@ const sendCommentAction = createAsyncThunk<
       })
       .catch((error) => {
         throw error;
-      });
-  }
+      })
 );
 
 export {
