@@ -1,22 +1,33 @@
 import { useState } from 'react';
 
-export default function ReviewsForm() {
-  const [, setFormState] = useState<{
+type Props = {
+  onSubmit: (data: { rating: number; review: string }) => Promise<void>;
+};
+
+export default function ReviewsForm({ onSubmit }: Props) {
+  const [formState, setFormState] = useState<{
     rating: number;
     review: string;
-  }>();
+  }>({ rating: 0, review: '' });
 
   return (
     <form
       className="reviews__form form"
-      // action="#"
-      // method="post"
+      onInput={(e) => {
+        const target = e.target as HTMLInputElement;
+        const name = target.name;
+        const value = target.value;
+        setFormState((prev) => ({
+          ...prev,
+          [name]: name === 'rating' ? parseInt(value, 10) : value,
+        }));
+      }}
       onSubmit={(e) => {
         e.preventDefault();
-        const fd = new FormData(e.target as HTMLFormElement);
-        const rating = Number(fd.get('rating'));
-        const review = fd.get('review') as string;
-        setFormState({ rating, review });
+        onSubmit(formState).then(() => {
+          setFormState({ rating: 0, review: '' });
+          (e.target as HTMLFormElement).reset();
+        });
       }}
     >
       <label className="reviews__label form__label" htmlFor="review">
@@ -123,7 +134,7 @@ export default function ReviewsForm() {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled
+          disabled={formState.rating === 0 || formState.review.length < 50}
         >
           Submit
         </button>

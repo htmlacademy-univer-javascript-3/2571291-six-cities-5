@@ -1,17 +1,59 @@
 import Layout from '@/layout';
 import ReviewsForm from '@/components/reviews-form';
 import ReviewsList from '@/components/reviews-list';
-import { reviews } from '@/mocks/reviews';
 import Map from '@/components/map';
 import { CityLocations } from '@/constants';
-import { useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import NearPlacesList from '@/components/near-places-list';
-import { useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useParams } from 'react-router-dom';
+import {
+  changeFavoriteStatusAction,
+  fetchOfferByIdAction,
+  sendCommentAction,
+} from '@/store/api-actions';
+import Spinner from '@/components/spinner';
+import { NotFound } from '..';
+import { AuthorizationStatus, FavoriteStatus } from '@/store/types';
+import classNames from 'classnames';
 
 function Offer() {
-  const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
-  const { filteredOffers } = useAppSelector((state) => state.offersReducer);
-  const nearbyOffers: OfferType[] = filteredOffers.slice(0, 3);
+  const [hoveredOffer, setHoveredOffer] = useState<OffersType['id']>();
+  const { id: offerId } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+  const { comments, isOfferLoading, offer } = useAppSelector(
+    (state) => state.offerReducer
+  );
+  const { offers, isOffersLoading } = useAppSelector(
+    (state) => state.offersReducer
+  );
+  const { authorizationStatus } = useAppSelector((state) => state.userReducer);
+  const nearbyOffers = useMemo(() => {
+    if (isOfferLoading || isOfferLoading || !offer) {
+      return [];
+    }
+
+    return offers
+      .filter((x) => x.city.name === offer.city.name && x.id !== offer.id)
+      .slice(0, 3);
+    // Так как React не может обрабатывать массивы, а если передать offers, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [isOffersLoading, isOfferLoading, offer]);
+
+  useLayoutEffect(() => {
+    if (!offerId) {
+      return;
+    }
+    dispatch(fetchOfferByIdAction(offerId));
+  }, [offerId, dispatch]);
+
+  if (isOfferLoading) {
+    return <Spinner />;
+  }
+
+  if (!offer) {
+    return <NotFound />;
+  }
 
   return (
     <Layout>
@@ -19,60 +61,43 @@ function Offer() {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/room.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-02.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-03.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/studio-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
-              <div className="offer__image-wrapper">
-                <img
-                  className="offer__image"
-                  src="img/apartment-01.jpg"
-                  alt="Photo studio"
-                />
-              </div>
+              {offer.images.map((image) => (
+                <div className="offer__image-wrapper" key={image}>
+                  <img
+                    className="offer__image"
+                    src={image}
+                    alt="Photo studio"
+                  />
+                </div>
+              ))}
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              <div className="offer__mark">
-                <span>Premium</span>
-              </div>
+              {offer.isPremium && (
+                <div className="offer__mark">
+                  <span>Premium</span>
+                </div>
+              )}
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">
-                  Beautiful &amp; luxurious studio at great location
-                </h1>
-                <button className="offer__bookmark-button button" type="button">
+                <h1 className="offer__name">{offer.title}</h1>
+                <button
+                  className={classNames(
+                    'offer__bookmark-button button',
+                    offer.isFavorite ? 'offer__bookmark-button--active' : ''
+                  )}
+                  type="button"
+                  onClick={() => {
+                    dispatch(
+                      changeFavoriteStatusAction({
+                        id: offer.id,
+                        status: offer.isFavorite
+                          ? FavoriteStatus.NotFavorite
+                          : FavoriteStatus.Favorite,
+                      })
+                    );
+                  }}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark" />
                   </svg>
@@ -81,39 +106,36 @@ function Offer() {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: '80%' }}></span>
+                  <span style={{ width: `${(offer.rating / 5) * 100}%` }} />
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">4.8</span>
+                <span className="offer__rating-value rating__value">
+                  {offer.rating}
+                </span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
                   Apartment
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  3 Bedrooms
+                  {offer.bedrooms} Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max 4 adults
+                  Max {offer.maxAdults} adults
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;120</b>
+                <b className="offer__price-value">&euro;{offer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  <li className="offer__inside-item">Wi-Fi</li>
-                  <li className="offer__inside-item">Washing machine</li>
-                  <li className="offer__inside-item">Towels</li>
-                  <li className="offer__inside-item">Heating</li>
-                  <li className="offer__inside-item">Coffee machine</li>
-                  <li className="offer__inside-item">Baby seat</li>
-                  <li className="offer__inside-item">Kitchen</li>
-                  <li className="offer__inside-item">Dishwasher</li>
-                  <li className="offer__inside-item">Cabel TV</li>
-                  <li className="offer__inside-item">Fridge</li>
+                  {offer.goods.map((good) => (
+                    <li className="offer__inside-item" key={good}>
+                      {good}
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="offer__host">
@@ -122,44 +144,52 @@ function Offer() {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src="img/avatar-angelina.jpg"
+                      src={offer.host.avatarUrl}
                       width="74"
                       height="74"
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">Angelina</span>
-                  <span className="offer__user-status">Pro</span>
+                  <span className="offer__user-name">{offer.host.name}</span>
+                  {offer.host.isPro && (
+                    <span className="offer__user-status">Pro</span>
+                  )}
                 </div>
                 <div className="offer__description">
-                  <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by
-                    the unique lightness of Amsterdam. The building is green and
-                    from 18th century.
-                  </p>
-                  <p className="offer__text">
-                    An independent House, strategically located between Rembrand
-                    Square and National Opera, but where the bustle of the city
-                    comes to rest in this alley flowery and colorful.
-                  </p>
+                  <p className="offer__text">{offer.description}</p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
-                <ReviewsList reviews={reviews} />
-                <ReviewsForm />
+                <ReviewsList comments={comments} />
+                {authorizationStatus === AuthorizationStatus.Authorized && (
+                  <ReviewsForm
+                    onSubmit={(data) => dispatch(
+                      sendCommentAction({
+                        id: offer.id,
+                        comment: data.review,
+                        rating: data.rating,
+                      })
+                    ).unwrap()}
+                  />
+                )}
               </section>
             </div>
           </div>
           <section className="offer__map map">
             <Map
               city={CityLocations.Amsterdam}
-              points={nearbyOffers
-                .filter((x) => !!x.location)
-                .map((offer) => ({
+              points={[
+                ...nearbyOffers.map((_offer) => ({
+                  id: _offer.id,
+                  latitude: _offer.location.latitude,
+                  longitude: _offer.location.longitude,
+                })),
+                {
                   id: offer.id,
                   latitude: offer.location.latitude,
                   longitude: offer.location.longitude,
-                }))}
+                },
+              ]}
               selectedPoint={hoveredOffer}
             />
           </section>

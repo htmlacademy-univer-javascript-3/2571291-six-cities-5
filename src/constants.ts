@@ -44,4 +44,6 @@ export const ApiRoutes = {
   Offers: '/offers',
   Login: '/login',
   Logout: '/logout',
+  Favorites: '/favorite',
+  Comments: '/comments',
 } as const;

@@ -1,19 +1,21 @@
 import FavoritesCard from '@/components/favorites-card';
 import { FavoritesEmptyPage } from '@/components/favorites-empty-page';
+import Spinner from '@/components/spinner';
 import Layout from '@/layout';
 import { useAppSelector } from '@/store/hooks';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Favorites() {
-  const { offers, isOffersLoading } = useAppSelector(
-    (state) => state.offersReducer
+  const { favorites, isFavoritesLoading } = useAppSelector(
+    (state) => state.favoritesReducer
   );
 
   const offersByCity = React.useMemo(() => {
-    if (isOffersLoading) {
+    if (isFavoritesLoading) {
       return {};
     }
-    return offers.reduce((acc, o) => {
+    return favorites.reduce((acc, o) => {
       if (!o.city.name) {
         return acc;
       }
@@ -22,13 +24,19 @@ function Favorites() {
       }
       acc[o.city.name].push(o);
       return acc;
-    }, {} as Record<string, OfferType[]>);
+    }, {} as Record<string, OffersType[]>);
 
     // Так как React не может обрабатывать массивы, а если передать points, то ререндер будет постоянным
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [isOffersLoading]);
+  }, [isFavoritesLoading, favorites.length]);
 
-  return <FavoritesEmptyPage />;
+  if (isFavoritesLoading) {
+    return <Spinner />;
+  }
+
+  if (!favorites.length) {
+    return <FavoritesEmptyPage />;
+  }
 
   return (
     <Layout>
@@ -41,9 +49,9 @@ function Favorites() {
                 <li className="favorites__locations-items" key={city}>
                   <div className="favorites__locations locations locations--current">
                     <div className="locations__item">
-                      <a className="locations__item-link" href="#">
+                      <Link className="locations__item-link" to="#">
                         <span>{city}</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="favorites__places">

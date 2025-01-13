@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import { changeFavoriteStatusAction } from '@/store/api-actions';
+import { useAppDispatch } from '@/store/hooks';
+import { FavoriteStatus } from '@/store/types';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const OfferCard = React.memo(
@@ -12,8 +15,8 @@ const OfferCard = React.memo(
     previewImage,
     rating = 4,
     onHover,
-  }: OfferType & { onHover?: (id?: OfferType['id']) => void }) => {
-    const [isBookmarked, setIsBookmarked] = useState(isFavorite);
+  }: OffersType & { onHover?: (id?: OffersType['id']) => void }) => {
+    const dispatch = useAppDispatch();
 
     return (
       <article
@@ -45,16 +48,25 @@ const OfferCard = React.memo(
             </div>
             <button
               className={`place-card__bookmark-button button ${
-                isBookmarked ? 'place-card__bookmark-button--active' : ''
+                isFavorite ? 'place-card__bookmark-button--active' : ''
               }`}
               type="button"
-              onClick={() => setIsBookmarked(!isBookmarked)}
+              onClick={() => {
+                dispatch(
+                  changeFavoriteStatusAction({
+                    id,
+                    status: isFavorite
+                      ? FavoriteStatus.NotFavorite
+                      : FavoriteStatus.Favorite,
+                  })
+                );
+              }}
             >
               <svg className="place-card__bookmark-icon" width="18" height="19">
                 <use xlinkHref="#icon-bookmark"></use>
               </svg>
               <span className="visually-hidden">
-                {isBookmarked ? 'In' : 'To'} bookmarks
+                {isFavorite ? 'In' : 'To'} bookmarks
               </span>
             </button>
           </div>

@@ -4,14 +4,23 @@ import type { store } from './';
 export type RootState = {
   offersReducer: {
     city: OfferCityType;
-    offers: OfferType[];
+    offers: OffersType[];
     isOffersLoading: boolean;
-    filteredOffers: OfferType[];
+    filteredOffers: OffersType[];
   };
   userReducer: {
     userData: User | undefined;
     isUserDataLoading: boolean;
     authorizationStatus: AuthorizationStatus;
+  };
+  offerReducer: {
+    offer: OfferType | undefined;
+    isOfferLoading: boolean;
+    comments: CommentType[];
+  };
+  favoritesReducer: {
+    favorites: OffersType[];
+    isFavoritesLoading: boolean;
   };
 };
 
@@ -20,4 +29,9 @@ export type AppDispatch = typeof store.dispatch;
 export enum AuthorizationStatus {
   Authorized = 'AUTHORIZED',
   Unauthorized = 'UNAUTHORIZED',
+}
+
+export enum FavoriteStatus {
+  NotFavorite,
+  Favorite,
 }
