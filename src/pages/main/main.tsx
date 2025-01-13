@@ -5,16 +5,39 @@ import OffersList from '@/components/offers-list';
 import { SortingForm } from '@/components/sorting-form';
 import Spinner from '@/components/spinner';
 import Layout from '@/layout';
-import { useAppSelector } from '@/store/hooks';
-import { useState } from 'react';
+import { setFilteredOffersAction } from '@/store/actions';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useLayoutEffect, useState, useEffect } from 'react';
 
 function Main() {
-  const [hoveredOffer, setHoveredOffer] = useState<OfferType['id']>();
+  const [hoveredOffer, setHoveredOffer] = useState<OffersType['id']>();
   const {
     city: selectedCity,
     isOffersLoading,
     filteredOffers,
+    offers,
   } = useAppSelector((state) => state.offersReducer);
+  const dispatch = useAppDispatch();
+
+  useLayoutEffect(() => {
+    if (isOffersLoading) {
+      return;
+    }
+
+    dispatch(
+      setFilteredOffersAction(
+        offers.filter((x) => x.city.name === selectedCity.name)
+      )
+    );
+
+    // Так как React не может обрабатывать массивы, а если передать offers, то ререндер будет постоянным
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [selectedCity, isOffersLoading, dispatch]);
+
+  useEffect(
+    () => console.log(filteredOffers),
+    [JSON.stringify(filteredOffers)]
+  );
 
   if (!isOffersLoading && !filteredOffers.length) {
     return <MainEmptyPage />;
@@ -42,19 +65,20 @@ function Main() {
                     {selectedCity.name}
                   </b>
                   <SortingForm />
-                  <OffersList onOfferHover={setHoveredOffer} />
+                  <OffersList
+                    offers={filteredOffers}
+                    onOfferHover={setHoveredOffer}
+                  />
                 </section>
                 <div className="cities__right-section">
                   <section className="cities__map">
                     <Map
                       city={selectedCity}
-                      points={filteredOffers
-                        .filter((x) => !!x.location)
-                        .map((offer) => ({
-                          id: offer.id,
-                          latitude: offer.location.latitude,
-                          longitude: offer.location.longitude,
-                        }))}
+                      points={filteredOffers.map((offer) => ({
+                        id: offer.id,
+                        latitude: offer.location.latitude,
+                        longitude: offer.location.longitude,
+                      }))}
                       selectedPoint={hoveredOffer}
                     />
                   </section>

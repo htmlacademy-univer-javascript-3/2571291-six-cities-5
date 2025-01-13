@@ -34,7 +34,7 @@ type OfferCityType = {
   location: LocationType;
 };
 
-type OfferType = {
+type OffersType = {
   id: string;
   title: string;
   type: string;
@@ -54,19 +54,45 @@ type CityMap = {
   zoom: number;
 };
 
-type Review = {
-  id: string;
-  avatar: string;
-  name: string;
-  rating: number;
-  text: string;
-  date: string;
-};
-
 type ValueOf<T> = T[keyof T];
 
 type PointMap = {
   id: string;
   latitude: number;
   longitude: number;
+};
+
+type CommentType = {
+  id: string;
+  date: string;
+  user: {
+    name: string;
+    avatarUrl: string;
+    isPro: boolean;
+  };
+  comment: string;
+  rating: number;
+};
+
+type OfferType = {
+  id: string;
+  title: string;
+  type: string;
+  price: number;
+  city: OfferCityType;
+  location: LocationType;
+  isFavorite: boolean;
+  isPremium: boolean;
+  rating: number;
+  previewImage: string;
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: {
+    name: string;
+    avatarUrl: string;
+    isPro: boolean;
+  };
+  images: string[];
+  maxAdults: number;
 };

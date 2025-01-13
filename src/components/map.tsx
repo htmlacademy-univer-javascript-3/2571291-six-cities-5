@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 type Props = {
   city: OfferCityType;
   points: PointMap[];
-  selectedPoint?: OfferType['id'];
+  selectedPoint?: OffersType['id'];
 };
 
 const defaultCustomIcon = new Icon({
@@ -26,9 +26,9 @@ function Map({ city, points, selectedPoint }: Props) {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const markerLayerRef = useRef(layerGroup());
-  const markersRef = useRef<{ marker: Marker; id: OfferType['id'] }[]>([]);
+  const markersRef = useRef<{ marker: Marker; id: OffersType['id'] }[]>([]);
   const lastSelectedPoint = useRef<{
-    id: OfferType['id'];
+    id: OffersType['id'];
     arrayIndex: number;
   }>();
 

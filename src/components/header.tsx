@@ -8,6 +8,9 @@ export default function Header() {
   const { authorizationStatus, userData } = useAppSelector(
     (state) => state.userReducer
   );
+  const { favorites, isFavoritesLoading } = useAppSelector(
+    (state) => state.favoritesReducer
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -38,7 +41,11 @@ export default function Header() {
                     <span className="header__user-name user__name">
                       {userData?.email}
                     </span>
-                    <span className="header__favorite-count">3</span>
+                    {!isFavoritesLoading && (
+                      <span className="header__favorite-count">
+                        {favorites.length}
+                      </span>
+                    )}
                   </Link>
                 </li>
                 <li className="header__nav-item">
@@ -61,13 +68,13 @@ export default function Header() {
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user" key="header__login">
-                  <a
+                  <Link
                     className="header__nav-link header__nav-link--profile"
-                    href="/login"
+                    to="/login"
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__login">Sign in</span>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

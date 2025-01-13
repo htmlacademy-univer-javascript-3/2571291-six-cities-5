@@ -4,10 +4,15 @@ import { App } from '@/app';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { ToastContainer } from 'react-toastify';
-import { fetchOffersAction, fetchUserAction } from './store/api-actions';
+import {
+  fetchFavoritesAction,
+  fetchOffersAction,
+  fetchUserAction,
+} from './store/api-actions';
 
 store.dispatch(fetchUserAction());
 store.dispatch(fetchOffersAction());
+store.dispatch(fetchFavoritesAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
